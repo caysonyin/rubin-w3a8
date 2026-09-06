@@ -1,0 +1,3 @@
+Command: uv run python scripts/sanity_linear.py
+
+sanity_linear: PASS

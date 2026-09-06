@@ -1,0 +1,3 @@
+Command: uv run python scripts/sanity_block.py --model-path models/Qwen3-0.6B-Base --device cpu
+
+sanity_block: PASS logits_shape=(1, 12, 151936) dtype=torch.bfloat16

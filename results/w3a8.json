@@ -1,0 +1,16 @@
+{
+  "spec_version": "phase2-v1",
+  "model_path": "models/Qwen3-0.6B-Base",
+  "mode": "w3a8",
+  "device": "cpu",
+  "dataset": "Salesforce/wikitext",
+  "dataset_config": "wikitext-2-raw-v1",
+  "split": "test",
+  "seq_len": 1024,
+  "num_eval_tokens": 32768,
+  "num_predicted_tokens": 32736,
+  "seed": 42,
+  "ppl": 29.066559790365766,
+  "mean_nll": 3.3695883653031067,
+  "runtime_seconds": 775.4967100009999
+}
