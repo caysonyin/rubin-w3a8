@@ -139,3 +139,12 @@ Possible extensions include W16A8 diagnostics, layer-sensitivity definitions,
 RMS²-weighted Lloyd fitting, Hadamard transforms, GPTQ, LUT refitting, K32
 studies, mixed precision, and a native Rubin kernel. These are not part of the
 current reference implementation.
+
+## Additional quantization recipe comparison
+
+A separately authorized two-recipe experiment now compares the original
+plain Lloyd-Max recipe with H64 + K64 block GPTQ + Hessian-refitted LUTs,
+under the same local model, CPU, scale format, and test protocol. See
+[the experiment report](quantization_comparison.md) and
+[`results/quantization_comparison/`](../results/quantization_comparison/).
+This extension does not revise the historical Phase 2/3 acceptance results.

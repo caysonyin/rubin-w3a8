@@ -1,0 +1,24 @@
+`torch_dtype` is deprecated! Use `dtype` instead!
+Using the latest cached version of the dataset since Salesforce/wikitext couldn't be found on the Hugging Face Hub (offline mode is enabled).
+Found the latest cached dataset configuration 'wikitext-2-raw-v1' at /tmp/rubin-quantization-datasets/Salesforce___wikitext/wikitext-2-raw-v1/0.0.0/b08601e04326c79dfdd32d625aee71d232d685c3 (last modified on Sun Sep  6 23:07:10 2026).
+Token indices sequence length is longer than the specified maximum sequence length for this model (299078 > 131072). Running this sequence through the model will result in indexing errors
+{
+  "spec_version": "reference-v1",
+  "model_path": "models/Qwen3-0.6B-Base",
+  "mode": "w3a16",
+  "device": "cpu",
+  "dataset": "Salesforce/wikitext",
+  "dataset_config": "wikitext-2-raw-v1",
+  "split": "test",
+  "seq_len": 1024,
+  "num_eval_tokens": 32768,
+  "num_predicted_tokens": 32736,
+  "seed": 42,
+  "ppl": 28.901278392539698,
+  "mean_nll": 3.363885829176022,
+  "runtime_seconds": 531.8063541669999,
+  "python_version": "3.14.4",
+  "torch_version": "2.14.0+cpu",
+  "transformers_version": "4.57.6",
+  "commit_sha": "56521288eb3d200cbb4f659c7d63c8c8a88664c6"
+}

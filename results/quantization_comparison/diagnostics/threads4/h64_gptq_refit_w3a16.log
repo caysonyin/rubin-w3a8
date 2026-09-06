@@ -1,0 +1,296 @@
+`torch_dtype` is deprecated! Use `dtype` instead!
+Using the latest cached version of the dataset since Salesforce/wikitext couldn't be found on the Hugging Face Hub (offline mode is enabled).
+Found the latest cached dataset configuration 'wikitext-2-raw-v1' at /tmp/rubin-quantization-datasets/Salesforce___wikitext/wikitext-2-raw-v1/0.0.0/b08601e04326c79dfdd32d625aee71d232d685c3 (last modified on Sun Sep  6 23:07:10 2026).
+Token indices sequence length is longer than the specified maximum sequence length for this model (299078 > 131072). Running this sequence through the model will result in indexing errors
+Using the latest cached version of the dataset since Salesforce/wikitext couldn't be found on the Hugging Face Hub (offline mode is enabled).
+Found the latest cached dataset configuration 'wikitext-2-raw-v1' at /tmp/rubin-quantization-datasets/Salesforce___wikitext/wikitext-2-raw-v1/0.0.0/b08601e04326c79dfdd32d625aee71d232d685c3 (last modified on Sun Sep  6 23:07:10 2026).
+quantized=1/196 module=model.layers.0.self_attn.q_proj
+quantized=2/196 module=model.layers.0.self_attn.k_proj
+quantized=3/196 module=model.layers.0.self_attn.v_proj
+quantized=4/196 module=model.layers.0.self_attn.o_proj
+quantized=5/196 module=model.layers.0.mlp.gate_proj
+quantized=6/196 module=model.layers.0.mlp.up_proj
+quantized=7/196 module=model.layers.0.mlp.down_proj
+quantized=8/196 module=model.layers.1.self_attn.q_proj
+quantized=9/196 module=model.layers.1.self_attn.k_proj
+quantized=10/196 module=model.layers.1.self_attn.v_proj
+quantized=11/196 module=model.layers.1.self_attn.o_proj
+quantized=12/196 module=model.layers.1.mlp.gate_proj
+quantized=13/196 module=model.layers.1.mlp.up_proj
+quantized=14/196 module=model.layers.1.mlp.down_proj
+quantized=15/196 module=model.layers.2.self_attn.q_proj
+quantized=16/196 module=model.layers.2.self_attn.k_proj
+quantized=17/196 module=model.layers.2.self_attn.v_proj
+quantized=18/196 module=model.layers.2.self_attn.o_proj
+quantized=19/196 module=model.layers.2.mlp.gate_proj
+quantized=20/196 module=model.layers.2.mlp.up_proj
+quantized=21/196 module=model.layers.2.mlp.down_proj
+quantized=22/196 module=model.layers.3.self_attn.q_proj
+quantized=23/196 module=model.layers.3.self_attn.k_proj
+quantized=24/196 module=model.layers.3.self_attn.v_proj
+quantized=25/196 module=model.layers.3.self_attn.o_proj
+quantized=26/196 module=model.layers.3.mlp.gate_proj
+quantized=27/196 module=model.layers.3.mlp.up_proj
+quantized=28/196 module=model.layers.3.mlp.down_proj
+quantized=29/196 module=model.layers.4.self_attn.q_proj
+quantized=30/196 module=model.layers.4.self_attn.k_proj
+quantized=31/196 module=model.layers.4.self_attn.v_proj
+quantized=32/196 module=model.layers.4.self_attn.o_proj
+quantized=33/196 module=model.layers.4.mlp.gate_proj
+quantized=34/196 module=model.layers.4.mlp.up_proj
+quantized=35/196 module=model.layers.4.mlp.down_proj
+quantized=36/196 module=model.layers.5.self_attn.q_proj
+quantized=37/196 module=model.layers.5.self_attn.k_proj
+quantized=38/196 module=model.layers.5.self_attn.v_proj
+quantized=39/196 module=model.layers.5.self_attn.o_proj
+quantized=40/196 module=model.layers.5.mlp.gate_proj
+quantized=41/196 module=model.layers.5.mlp.up_proj
+quantized=42/196 module=model.layers.5.mlp.down_proj
+quantized=43/196 module=model.layers.6.self_attn.q_proj
+quantized=44/196 module=model.layers.6.self_attn.k_proj
+quantized=45/196 module=model.layers.6.self_attn.v_proj
+quantized=46/196 module=model.layers.6.self_attn.o_proj
+quantized=47/196 module=model.layers.6.mlp.gate_proj
+quantized=48/196 module=model.layers.6.mlp.up_proj
+quantized=49/196 module=model.layers.6.mlp.down_proj
+quantized=50/196 module=model.layers.7.self_attn.q_proj
+quantized=51/196 module=model.layers.7.self_attn.k_proj
+quantized=52/196 module=model.layers.7.self_attn.v_proj
+quantized=53/196 module=model.layers.7.self_attn.o_proj
+quantized=54/196 module=model.layers.7.mlp.gate_proj
+quantized=55/196 module=model.layers.7.mlp.up_proj
+quantized=56/196 module=model.layers.7.mlp.down_proj
+quantized=57/196 module=model.layers.8.self_attn.q_proj
+quantized=58/196 module=model.layers.8.self_attn.k_proj
+quantized=59/196 module=model.layers.8.self_attn.v_proj
+quantized=60/196 module=model.layers.8.self_attn.o_proj
+quantized=61/196 module=model.layers.8.mlp.gate_proj
+quantized=62/196 module=model.layers.8.mlp.up_proj
+quantized=63/196 module=model.layers.8.mlp.down_proj
+quantized=64/196 module=model.layers.9.self_attn.q_proj
+quantized=65/196 module=model.layers.9.self_attn.k_proj
+quantized=66/196 module=model.layers.9.self_attn.v_proj
+quantized=67/196 module=model.layers.9.self_attn.o_proj
+quantized=68/196 module=model.layers.9.mlp.gate_proj
+quantized=69/196 module=model.layers.9.mlp.up_proj
+quantized=70/196 module=model.layers.9.mlp.down_proj
+quantized=71/196 module=model.layers.10.self_attn.q_proj
+quantized=72/196 module=model.layers.10.self_attn.k_proj
+quantized=73/196 module=model.layers.10.self_attn.v_proj
+quantized=74/196 module=model.layers.10.self_attn.o_proj
+quantized=75/196 module=model.layers.10.mlp.gate_proj
+quantized=76/196 module=model.layers.10.mlp.up_proj
+quantized=77/196 module=model.layers.10.mlp.down_proj
+quantized=78/196 module=model.layers.11.self_attn.q_proj
+quantized=79/196 module=model.layers.11.self_attn.k_proj
+quantized=80/196 module=model.layers.11.self_attn.v_proj
+quantized=81/196 module=model.layers.11.self_attn.o_proj
+quantized=82/196 module=model.layers.11.mlp.gate_proj
+quantized=83/196 module=model.layers.11.mlp.up_proj
+quantized=84/196 module=model.layers.11.mlp.down_proj
+quantized=85/196 module=model.layers.12.self_attn.q_proj
+quantized=86/196 module=model.layers.12.self_attn.k_proj
+quantized=87/196 module=model.layers.12.self_attn.v_proj
+quantized=88/196 module=model.layers.12.self_attn.o_proj
+quantized=89/196 module=model.layers.12.mlp.gate_proj
+quantized=90/196 module=model.layers.12.mlp.up_proj
+quantized=91/196 module=model.layers.12.mlp.down_proj
+quantized=92/196 module=model.layers.13.self_attn.q_proj
+quantized=93/196 module=model.layers.13.self_attn.k_proj
+quantized=94/196 module=model.layers.13.self_attn.v_proj
+quantized=95/196 module=model.layers.13.self_attn.o_proj
+quantized=96/196 module=model.layers.13.mlp.gate_proj
+quantized=97/196 module=model.layers.13.mlp.up_proj
+quantized=98/196 module=model.layers.13.mlp.down_proj
+quantized=99/196 module=model.layers.14.self_attn.q_proj
+quantized=100/196 module=model.layers.14.self_attn.k_proj
+quantized=101/196 module=model.layers.14.self_attn.v_proj
+quantized=102/196 module=model.layers.14.self_attn.o_proj
+quantized=103/196 module=model.layers.14.mlp.gate_proj
+quantized=104/196 module=model.layers.14.mlp.up_proj
+quantized=105/196 module=model.layers.14.mlp.down_proj
+quantized=106/196 module=model.layers.15.self_attn.q_proj
+quantized=107/196 module=model.layers.15.self_attn.k_proj
+quantized=108/196 module=model.layers.15.self_attn.v_proj
+quantized=109/196 module=model.layers.15.self_attn.o_proj
+quantized=110/196 module=model.layers.15.mlp.gate_proj
+quantized=111/196 module=model.layers.15.mlp.up_proj
+quantized=112/196 module=model.layers.15.mlp.down_proj
+quantized=113/196 module=model.layers.16.self_attn.q_proj
+quantized=114/196 module=model.layers.16.self_attn.k_proj
+quantized=115/196 module=model.layers.16.self_attn.v_proj
+quantized=116/196 module=model.layers.16.self_attn.o_proj
+quantized=117/196 module=model.layers.16.mlp.gate_proj
+quantized=118/196 module=model.layers.16.mlp.up_proj
+quantized=119/196 module=model.layers.16.mlp.down_proj
+quantized=120/196 module=model.layers.17.self_attn.q_proj
+quantized=121/196 module=model.layers.17.self_attn.k_proj
+quantized=122/196 module=model.layers.17.self_attn.v_proj
+quantized=123/196 module=model.layers.17.self_attn.o_proj
+quantized=124/196 module=model.layers.17.mlp.gate_proj
+quantized=125/196 module=model.layers.17.mlp.up_proj
+quantized=126/196 module=model.layers.17.mlp.down_proj
+quantized=127/196 module=model.layers.18.self_attn.q_proj
+quantized=128/196 module=model.layers.18.self_attn.k_proj
+quantized=129/196 module=model.layers.18.self_attn.v_proj
+quantized=130/196 module=model.layers.18.self_attn.o_proj
+quantized=131/196 module=model.layers.18.mlp.gate_proj
+quantized=132/196 module=model.layers.18.mlp.up_proj
+quantized=133/196 module=model.layers.18.mlp.down_proj
+quantized=134/196 module=model.layers.19.self_attn.q_proj
+quantized=135/196 module=model.layers.19.self_attn.k_proj
+quantized=136/196 module=model.layers.19.self_attn.v_proj
+quantized=137/196 module=model.layers.19.self_attn.o_proj
+quantized=138/196 module=model.layers.19.mlp.gate_proj
+quantized=139/196 module=model.layers.19.mlp.up_proj
+quantized=140/196 module=model.layers.19.mlp.down_proj
+quantized=141/196 module=model.layers.20.self_attn.q_proj
+quantized=142/196 module=model.layers.20.self_attn.k_proj
+quantized=143/196 module=model.layers.20.self_attn.v_proj
+quantized=144/196 module=model.layers.20.self_attn.o_proj
+quantized=145/196 module=model.layers.20.mlp.gate_proj
+quantized=146/196 module=model.layers.20.mlp.up_proj
+quantized=147/196 module=model.layers.20.mlp.down_proj
+quantized=148/196 module=model.layers.21.self_attn.q_proj
+quantized=149/196 module=model.layers.21.self_attn.k_proj
+quantized=150/196 module=model.layers.21.self_attn.v_proj
+quantized=151/196 module=model.layers.21.self_attn.o_proj
+quantized=152/196 module=model.layers.21.mlp.gate_proj
+quantized=153/196 module=model.layers.21.mlp.up_proj
+quantized=154/196 module=model.layers.21.mlp.down_proj
+quantized=155/196 module=model.layers.22.self_attn.q_proj
+quantized=156/196 module=model.layers.22.self_attn.k_proj
+quantized=157/196 module=model.layers.22.self_attn.v_proj
+quantized=158/196 module=model.layers.22.self_attn.o_proj
+quantized=159/196 module=model.layers.22.mlp.gate_proj
+quantized=160/196 module=model.layers.22.mlp.up_proj
+quantized=161/196 module=model.layers.22.mlp.down_proj
+quantized=162/196 module=model.layers.23.self_attn.q_proj
+quantized=163/196 module=model.layers.23.self_attn.k_proj
+quantized=164/196 module=model.layers.23.self_attn.v_proj
+quantized=165/196 module=model.layers.23.self_attn.o_proj
+quantized=166/196 module=model.layers.23.mlp.gate_proj
+quantized=167/196 module=model.layers.23.mlp.up_proj
+quantized=168/196 module=model.layers.23.mlp.down_proj
+quantized=169/196 module=model.layers.24.self_attn.q_proj
+quantized=170/196 module=model.layers.24.self_attn.k_proj
+quantized=171/196 module=model.layers.24.self_attn.v_proj
+quantized=172/196 module=model.layers.24.self_attn.o_proj
+quantized=173/196 module=model.layers.24.mlp.gate_proj
+quantized=174/196 module=model.layers.24.mlp.up_proj
+quantized=175/196 module=model.layers.24.mlp.down_proj
+quantized=176/196 module=model.layers.25.self_attn.q_proj
+quantized=177/196 module=model.layers.25.self_attn.k_proj
+quantized=178/196 module=model.layers.25.self_attn.v_proj
+quantized=179/196 module=model.layers.25.self_attn.o_proj
+quantized=180/196 module=model.layers.25.mlp.gate_proj
+quantized=181/196 module=model.layers.25.mlp.up_proj
+quantized=182/196 module=model.layers.25.mlp.down_proj
+quantized=183/196 module=model.layers.26.self_attn.q_proj
+quantized=184/196 module=model.layers.26.self_attn.k_proj
+quantized=185/196 module=model.layers.26.self_attn.v_proj
+quantized=186/196 module=model.layers.26.self_attn.o_proj
+quantized=187/196 module=model.layers.26.mlp.gate_proj
+quantized=188/196 module=model.layers.26.mlp.up_proj
+quantized=189/196 module=model.layers.26.mlp.down_proj
+quantized=190/196 module=model.layers.27.self_attn.q_proj
+quantized=191/196 module=model.layers.27.self_attn.k_proj
+quantized=192/196 module=model.layers.27.self_attn.v_proj
+quantized=193/196 module=model.layers.27.self_attn.o_proj
+quantized=194/196 module=model.layers.27.mlp.gate_proj
+quantized=195/196 module=model.layers.27.mlp.up_proj
+quantized=196/196 module=model.layers.27.mlp.down_proj
+full_model_smoke: PASS
+block=1/32 mean_nll=2.45798753
+block=2/32 mean_nll=2.88089816
+block=3/32 mean_nll=2.96862145
+block=4/32 mean_nll=3.05296992
+block=5/32 mean_nll=3.17759357
+block=6/32 mean_nll=3.19864901
+block=7/32 mean_nll=3.25483273
+block=8/32 mean_nll=3.26262718
+block=9/32 mean_nll=3.18830903
+block=10/32 mean_nll=3.20729988
+block=11/32 mean_nll=3.17017764
+block=12/32 mean_nll=3.09862046
+block=13/32 mean_nll=3.04293800
+block=14/32 mean_nll=2.99357523
+block=15/32 mean_nll=2.99411923
+block=16/32 mean_nll=2.99731107
+block=17/32 mean_nll=3.00087300
+block=18/32 mean_nll=3.02125943
+block=19/32 mean_nll=3.04781442
+block=20/32 mean_nll=3.04685923
+block=21/32 mean_nll=3.04831127
+block=22/32 mean_nll=3.05650298
+block=23/32 mean_nll=3.05072275
+block=24/32 mean_nll=3.06483186
+block=25/32 mean_nll=3.06173873
+block=26/32 mean_nll=3.05805138
+block=27/32 mean_nll=3.06195944
+block=28/32 mean_nll=3.06721151
+block=29/32 mean_nll=3.07130455
+block=30/32 mean_nll=3.07529204
+block=31/32 mean_nll=3.07736711
+block=32/32 mean_nll=3.08479416
+{
+  "spec_version": "reference-v1",
+  "experiment_version": "quantization-comparison-v1",
+  "weight_method": "h64_gptq_refit",
+  "model_fingerprint": "d233a01a10d6dabc728c8bbc6c7264d6ecf223389dfaff023ba5ccb93f9b2cb8",
+  "tokenizer_fingerprint": "3fefda09ddf2c1c12a32bbb655147b38cbccfbe79fb6bc15dd1e366e00a35fd2",
+  "eval_token_hash": "231c8057fb76211650323905ea830e74b868e4dca22002a66ae91face6ebf461",
+  "payload_fingerprint": "93da19247272e6ce0b6a7f0fd17c9c49b6f8462c34b3ddd8b3de842d8c68f043",
+  "quantization_format": {
+    "tile": [
+      8,
+      64
+    ],
+    "lut": "e4m3",
+    "scale": "fp32_max_abs_div448_k64",
+    "activation": "existing_fp32_scale_e4m3_k64",
+    "compute": "fp32_output_input_dtype"
+  },
+  "recipe_config": {
+    "version": 1,
+    "hadamard_seed": 20260813,
+    "lm_max_iters": 50,
+    "gptq_damp": 0.01,
+    "refit_damp": 0.0001,
+    "refit_iters": 3,
+    "refit_tolerance": 1e-05,
+    "refit_alphas": [
+      1.0,
+      0.5,
+      0.25
+    ],
+    "source_commit": "658d6539153530fd63a7bd8017bec619f6604539"
+  },
+  "calibration": {
+    "dataset": "Salesforce/wikitext",
+    "config": "wikitext-2-raw-v1",
+    "split": "train",
+    "tokens": 512,
+    "token_hash": "7a699eca3df7d1340790642291e8c944a57386331df2f6e4e388da80ced8a4ab",
+    "source": "unquantized_bf16_inputs_fp32_rotation"
+  },
+  "full_model_smoke": "PASS",
+  "cpu_threads": 4,
+  "model_path": "models/Qwen3-0.6B-Base",
+  "mode": "w3a16",
+  "device": "cpu",
+  "dataset": "Salesforce/wikitext",
+  "dataset_config": "wikitext-2-raw-v1",
+  "split": "test",
+  "seq_len": 1024,
+  "num_eval_tokens": 32768,
+  "num_predicted_tokens": 32736,
+  "seed": 42,
+  "ppl": 21.862966209839833,
+  "mean_nll": 3.0847941647526804,
+  "runtime_seconds": 570.3626883100005,
+  "python_version": "3.14.4",
+  "torch_version": "2.14.0+cpu",
+  "transformers_version": "4.57.6",
+  "commit_sha": "56521288eb3d200cbb4f659c7d63c8c8a88664c6"
+}

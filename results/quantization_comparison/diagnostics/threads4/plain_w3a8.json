@@ -1,0 +1,54 @@
+{
+  "spec_version": "reference-v1",
+  "experiment_version": "quantization-comparison-v1",
+  "weight_method": "plain_lloyd_max",
+  "model_fingerprint": "d233a01a10d6dabc728c8bbc6c7264d6ecf223389dfaff023ba5ccb93f9b2cb8",
+  "tokenizer_fingerprint": "3fefda09ddf2c1c12a32bbb655147b38cbccfbe79fb6bc15dd1e366e00a35fd2",
+  "eval_token_hash": "231c8057fb76211650323905ea830e74b868e4dca22002a66ae91face6ebf461",
+  "payload_fingerprint": "b51d1413b50282f1062fe02645caacb6893a3d37d34d8daeca582ba173453de9",
+  "quantization_format": {
+    "tile": [
+      8,
+      64
+    ],
+    "lut": "e4m3",
+    "scale": "fp32_max_abs_div448_k64",
+    "activation": "existing_fp32_scale_e4m3_k64",
+    "compute": "fp32_output_input_dtype"
+  },
+  "recipe_config": {
+    "version": 1,
+    "hadamard_seed": 20260813,
+    "lm_max_iters": 50,
+    "gptq_damp": 0.01,
+    "refit_damp": 0.0001,
+    "refit_iters": 3,
+    "refit_tolerance": 1e-05,
+    "refit_alphas": [
+      1.0,
+      0.5,
+      0.25
+    ],
+    "source_commit": "658d6539153530fd63a7bd8017bec619f6604539"
+  },
+  "calibration": null,
+  "full_model_smoke": "PASS",
+  "cpu_threads": 4,
+  "model_path": "models/Qwen3-0.6B-Base",
+  "mode": "w3a8",
+  "device": "cpu",
+  "dataset": "Salesforce/wikitext",
+  "dataset_config": "wikitext-2-raw-v1",
+  "split": "test",
+  "seq_len": 1024,
+  "num_eval_tokens": 32768,
+  "num_predicted_tokens": 32736,
+  "seed": 42,
+  "ppl": 29.01521231346605,
+  "mean_nll": 3.3678202549849554,
+  "runtime_seconds": 230.97055853299935,
+  "python_version": "3.14.4",
+  "torch_version": "2.14.0+cpu",
+  "transformers_version": "4.57.6",
+  "commit_sha": "56521288eb3d200cbb4f659c7d63c8c8a88664c6"
+}

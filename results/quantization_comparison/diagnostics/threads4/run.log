@@ -1,0 +1,18 @@
+Running bf16
+Running plain_w3a16
+Running plain_w3a8
+Running h64_gptq_refit_w3a16
+Running h64_gptq_refit_w3a8
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/caysonyin/Projects/rubin-w3a8/scripts/run_quantization_comparison.py", line 59, in <module>
+    '--output', str(out / f'{name}.json')]
+    
+  File "/home/caysonyin/Projects/rubin-w3a8/scripts/run_quantization_comparison.py", line 44, in main
+    subprocess.run(command, env=prep_env, stdout=log, stderr=subprocess.STDOUT, check=True)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['/home/caysonyin/Projects/rubin-w3a8/.venv/bin/python', '-m', 'scripts.compare_quantization', 'results/quantization_comparison/bf16.json', 'results/quantization_comparison/plain_w3a16.json', 'results/quantization_comparison/plain_w3a8.json', 'results/quantization_comparison/h64_gptq_refit_w3a16.json', 'results/quantization_comparison/h64_gptq_refit_w3a8.json', '--output-dir', 'results/quantization_comparison']' returned non-zero exit status 1.

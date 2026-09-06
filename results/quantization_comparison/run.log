@@ -1,0 +1,31 @@
+Running bf16
+Reusing completed plain_w3a16
+Running plain_w3a8
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/caysonyin/Projects/rubin-w3a8/scripts/run_quantization_comparison.py", line 83, in <module>
+    main()
+    ~~~~^^
+  File "/home/caysonyin/Projects/rubin-w3a8/scripts/run_quantization_comparison.py", line 50, in main
+    raise ValueError(f'Incompatible completed row: {name}')
+ValueError: Incompatible completed row: h64_gptq_refit_w3a16
+Reusing completed bf16
+Reusing completed plain_w3a16
+Reusing completed plain_w3a8
+Running h64_gptq_refit_w3a16
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/caysonyin/Projects/rubin-w3a8/scripts/run_quantization_comparison.py", line 83, in <module>
+    main()
+    ~~~~^^
+  File "/home/caysonyin/Projects/rubin-w3a8/scripts/run_quantization_comparison.py", line 50, in main
+    raise ValueError(f'Incompatible completed row: {name}')
+ValueError: Incompatible completed row: h64_gptq_refit_w3a8
+Reusing completed bf16
+Reusing completed plain_w3a16
+Reusing completed plain_w3a8
+Reusing completed h64_gptq_refit_w3a16
+Running h64_gptq_refit_w3a8
+Five-row comparison and baseline reproduction: PASS

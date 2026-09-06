@@ -132,3 +132,13 @@ performance benchmark. FP32 scales and the Lloyd-Max recipe are
 implementation-specific choices. No accuracy-recovery method from supplemental
 materials is implemented, so the reported PPL should not be generalized to
 other implementations.
+
+## Additional quantization experiment
+
+The separate [quantization comparison](quantization_comparison.md) retains
+this numerical format and the plain recipe as its baseline, and adds an
+explicitly selected H64 + block-GPTQ + Hessian LUT-refit recipe. Its W3A16
+path performs the paired input rotation in FP32; W3A8 quantizes the rotated
+input with this specification's existing A8 rule. It uses its own experiment
+version, recipe metadata, and payload identity in addition to `reference-v1`.
+Historical results and the default plain Lloyd-Max quantizer remain unchanged.

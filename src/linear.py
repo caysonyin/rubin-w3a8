@@ -9,6 +9,7 @@ from torch.nn import functional as F
 from .activation import fake_quantize_activation_k64
 from .grouping import to_n8k64_tiles
 from .weight import LUTWeight, reconstruct_weight
+from .hadamard import rotate
 
 
 def _lookup_weight(qweight: LUTWeight) -> torch.Tensor:
@@ -37,12 +38,15 @@ def reference_linear_lookup(
     bias: torch.Tensor | None = None,
     *,
     quantize_activations: bool = True,
+    signs: torch.Tensor | None = None,
 ) -> torch.Tensor:
     """Run explicit LUT lookup with optional K64 activation quantization."""
 
     if x.shape[-1] != qweight.original_shape[1]:
         raise ValueError("x K dimension does not match qweight")
     input_dtype = x.dtype
+    if signs is not None:
+        x = rotate(x, signs)
     x_hat = fake_quantize_activation_k64(x) if quantize_activations else x.to(torch.float32)
     weight_hat = _lookup_weight(qweight)
     bias_fp32 = bias.to(torch.float32) if bias is not None else None
@@ -59,8 +63,10 @@ class CachedLUTLinear(nn.Module):
         bias: torch.Tensor | None = None,
         *,
         quantize_activations: bool = True,
+        signs: torch.Tensor | None = None,
     ) -> None:
         super().__init__()
+        self.register_buffer("signs", signs.detach().clone() if signs is not None else None)
         self.register_buffer("indices", qweight.indices.detach().clone())
         self.register_buffer("luts", qweight.luts.detach().clone())
         self.register_buffer("scales", qweight.scales.detach().clone())
@@ -85,6 +91,8 @@ class CachedLUTLinear(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         input_dtype = x.dtype
+        if self.signs is not None:
+            x = rotate(x, self.signs)
         x_hat = (
             fake_quantize_activation_k64(x)
             if self.quantize_activations

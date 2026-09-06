@@ -1,0 +1,31 @@
+{
+  "artifact_acceptance": "PASS",
+  "engineering_acceptance": "PASS",
+  "tests_passed": 42,
+  "full_model_smokes": 5,
+  "optimized_layers": 196,
+  "paired_payloads_match": true,
+  "baseline_reproduction": {
+    "bf16": {
+      "delta_mean_nll": 0.0,
+      "delta_ppl": 0.0,
+      "pass": true
+    },
+    "w3a16": {
+      "delta_mean_nll": 0.0,
+      "delta_ppl": 0.0,
+      "pass": true
+    },
+    "w3a8": {
+      "delta_mean_nll": 0.0,
+      "delta_ppl": 0.0,
+      "pass": true
+    }
+  },
+  "source_manifest_verified": true,
+  "scope": "local Qwen3-0.6B-Base, CPU K64 FP32-scale two-recipe comparison",
+  "ppl_reduction_percent": {
+    "w3a16": 24.413346643001187,
+    "w3a8": 23.53918741024861
+  }
+}

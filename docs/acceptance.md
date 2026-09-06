@@ -33,8 +33,12 @@ README. The evaluator records model, protocol, runtime, and repository metadata
 in each JSON result. The comparison records three rows and uses mean NLL for
 the W3 weight and activation quantization attribution.
 
-## Scope stop
+## Historical Phase 2/3 scope stop
 
 No W16A8, layer-sensitivity study, accuracy-recovery method, CUDA/PTX/Triton
 path, physical packing, performance benchmark, additional model, or additional
-downstream benchmark is included in the current reference.
+downstream benchmark was included in the original Phase 2/3 acceptance scope.
+
+The subsequently authorized H64 + GPTQ + LUT-refit comparison is documented
+separately in [quantization_comparison.md](quantization_comparison.md); it
+does not retroactively change the gates above.

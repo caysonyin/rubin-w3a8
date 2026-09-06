@@ -1,0 +1,100 @@
+`torch_dtype` is deprecated! Use `dtype` instead!
+Using the latest cached version of the dataset since Salesforce/wikitext couldn't be found on the Hugging Face Hub (offline mode is enabled).
+Found the latest cached dataset configuration 'wikitext-2-raw-v1' at /tmp/rubin-quantization-datasets/Salesforce___wikitext/wikitext-2-raw-v1/0.0.0/b08601e04326c79dfdd32d625aee71d232d685c3 (last modified on Sun Sep  6 23:07:10 2026).
+Token indices sequence length is longer than the specified maximum sequence length for this model (299078 > 131072). Running this sequence through the model will result in indexing errors
+Using the latest cached version of the dataset since Salesforce/wikitext couldn't be found on the Hugging Face Hub (offline mode is enabled).
+Found the latest cached dataset configuration 'wikitext-2-raw-v1' at /tmp/rubin-quantization-datasets/Salesforce___wikitext/wikitext-2-raw-v1/0.0.0/b08601e04326c79dfdd32d625aee71d232d685c3 (last modified on Sun Sep  6 23:07:10 2026).
+full_model_smoke: PASS
+block=1/32 mean_nll=2.47731950
+block=2/32 mean_nll=2.89784505
+block=3/32 mean_nll=2.98673328
+block=4/32 mean_nll=3.07026918
+block=5/32 mean_nll=3.19631183
+block=6/32 mean_nll=3.21945132
+block=7/32 mean_nll=3.27505709
+block=8/32 mean_nll=3.28229207
+block=9/32 mean_nll=3.20733317
+block=10/32 mean_nll=3.22623803
+block=11/32 mean_nll=3.18841534
+block=12/32 mean_nll=3.11624433
+block=13/32 mean_nll=3.06084704
+block=14/32 mean_nll=3.01183606
+block=15/32 mean_nll=3.01233940
+block=16/32 mean_nll=3.01534235
+block=17/32 mean_nll=3.01849671
+block=18/32 mean_nll=3.03887328
+block=19/32 mean_nll=3.06550932
+block=20/32 mean_nll=3.06406990
+block=21/32 mean_nll=3.06538509
+block=22/32 mean_nll=3.07404264
+block=23/32 mean_nll=3.06792343
+block=24/32 mean_nll=3.08203259
+block=25/32 mean_nll=3.07881154
+block=26/32 mean_nll=3.07506605
+block=27/32 mean_nll=3.07927632
+block=28/32 mean_nll=3.08445569
+block=29/32 mean_nll=3.08868166
+block=30/32 mean_nll=3.09211302
+block=31/32 mean_nll=3.09387819
+block=32/32 mean_nll=3.10119654
+{
+  "spec_version": "reference-v1",
+  "experiment_version": "quantization-comparison-v1",
+  "weight_method": "h64_gptq_refit",
+  "model_fingerprint": "d233a01a10d6dabc728c8bbc6c7264d6ecf223389dfaff023ba5ccb93f9b2cb8",
+  "tokenizer_fingerprint": "3fefda09ddf2c1c12a32bbb655147b38cbccfbe79fb6bc15dd1e366e00a35fd2",
+  "eval_token_hash": "231c8057fb76211650323905ea830e74b868e4dca22002a66ae91face6ebf461",
+  "payload_fingerprint": "93da19247272e6ce0b6a7f0fd17c9c49b6f8462c34b3ddd8b3de842d8c68f043",
+  "quantization_format": {
+    "tile": [
+      8,
+      64
+    ],
+    "lut": "e4m3",
+    "scale": "fp32_max_abs_div448_k64",
+    "activation": "existing_fp32_scale_e4m3_k64",
+    "compute": "fp32_output_input_dtype"
+  },
+  "recipe_config": {
+    "version": 1,
+    "hadamard_seed": 20260813,
+    "lm_max_iters": 50,
+    "gptq_damp": 0.01,
+    "refit_damp": 0.0001,
+    "refit_iters": 3,
+    "refit_tolerance": 1e-05,
+    "refit_alphas": [
+      1.0,
+      0.5,
+      0.25
+    ],
+    "source_commit": "658d6539153530fd63a7bd8017bec619f6604539"
+  },
+  "calibration": {
+    "dataset": "Salesforce/wikitext",
+    "config": "wikitext-2-raw-v1",
+    "split": "train",
+    "tokens": 512,
+    "token_hash": "7a699eca3df7d1340790642291e8c944a57386331df2f6e4e388da80ced8a4ab",
+    "source": "unquantized_bf16_inputs_fp32_rotation"
+  },
+  "full_model_smoke": "PASS",
+  "cpu_threads": 20,
+  "model_path": "models/Qwen3-0.6B-Base",
+  "mode": "w3a8",
+  "device": "cpu",
+  "dataset": "Salesforce/wikitext",
+  "dataset_config": "wikitext-2-raw-v1",
+  "split": "test",
+  "seq_len": 1024,
+  "num_eval_tokens": 32768,
+  "num_predicted_tokens": 32736,
+  "seed": 42,
+  "ppl": 22.224527807599603,
+  "mean_nll": 3.1011965351720012,
+  "runtime_seconds": 216.07280294699922,
+  "python_version": "3.14.4",
+  "torch_version": "2.14.0+cpu",
+  "transformers_version": "4.57.6",
+  "commit_sha": "56521288eb3d200cbb4f659c7d63c8c8a88664c6"
+}

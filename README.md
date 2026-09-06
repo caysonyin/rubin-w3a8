@@ -85,3 +85,29 @@ quantization. The complete interpretation and limitations are in
 
 The 1.2 GB model weight file is intentionally not committed to Git. Supply it
 separately at `models/Qwen3-0.6B-Base`.
+
+## Additional quantization comparison
+
+A separate CPU experiment compares plain Lloyd-Max with signed H64 + K64
+GPTQ + Hessian-refitted E4M3 LUTs, each in W3A16 and W3A8, sharing BF16.
+It preserves this project's FP32 K64 scale rules and the original results.
+
+```bash
+uv run python -m scripts.run_quantization_comparison
+```
+
+Both WikiText-2 train and test must already be cached; evaluation is offline.
+See [experiment protocol](docs/quantization_comparison.md) for the fixed
+512-token train calibration, payload reuse, reference-source differences,
+and reproducibility instructions.
+
+Recorded comparison (shared BF16 PPL: 14.0696):
+
+| Recipe | W3A16 PPL | W3A8 PPL |
+|---|---:|---:|
+| plain Lloyd-Max | 28.9173 | 29.0666 |
+| H64 + GPTQ + refitted LUT | 21.8577 | 22.2245 |
+
+All 42 tests passed. With 20 evaluation threads, all three historical
+baselines reproduce exactly. See [results](results/quantization_comparison/summary.csv)
+and the experiment report for metadata, calibration, and threading details.
