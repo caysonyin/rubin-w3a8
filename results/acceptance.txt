@@ -1,0 +1,16 @@
+Reference evaluation acceptance: PASS
+
+Environment: Python 3.14.4; uv.lock; CPU PyTorch 2.14.0+cpu
+Regression: 14 passed
+Determinism: bit-exact cached quantized CPU forward
+CPU-only CLI: --device cuda rejected; --device choices are {cpu}
+BF16: mean_nll=2.64401770896576; ppl=14.069617833591494
+W3A8: mean_nll=3.3695883653031067; ppl=29.066559790365766
+Summary: metadata consistency and PPL/mean-NLL integrity checks passed
+Historical reproduction: both PPL values within the specified tolerance
+Documentation: README, numerical specification, and final report updated
+
+Recorded result files:
+- bf16.json
+- w3a8.json
+- summary.csv

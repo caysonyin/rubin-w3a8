@@ -1,7 +1,7 @@
 import torch
 
-from rubin_w3a8.activation import fake_quantize_activation_k64
-from rubin_w3a8.scales import activation_scales_k64, weight_scales_k64
+from src.activation import fake_quantize_activation_k64
+from src.scales import activation_scales_k64, weight_scales_k64
 
 
 def test_zero_scale_is_one() -> None:

@@ -6,7 +6,9 @@ import argparse
 
 import torch
 
-from rubin_w3a8 import quantize_weight, reconstruct_weight, reference_linear_lookup
+from src.activation import fake_quantize_activation_k64
+from src.linear import reference_linear_lookup
+from src.weight import quantize_weight, reconstruct_weight
 
 
 def main() -> None:
@@ -22,7 +24,7 @@ def main() -> None:
                 qweight = quantize_weight(weight)
                 x = torch.randn(m, k, dtype=torch.bfloat16)
                 y_lookup = reference_linear_lookup(x, qweight, bias)
-                x_hat = __import__("rubin_w3a8").fake_quantize_activation_k64(x)
+                x_hat = fake_quantize_activation_k64(x)
                 y_dense = torch.nn.functional.linear(x_hat, reconstruct_weight(qweight), bias).to(x.dtype)
                 torch.testing.assert_close(y_lookup, y_dense, rtol=1e-5, atol=1e-6)
                 assert torch.isfinite(y_lookup).all()

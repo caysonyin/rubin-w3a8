@@ -1,24 +1,43 @@
 # Rubin LUT-W3A8 CPU Numerical Reference
 
-This repository implements the frozen Phase 2 CPU reference for an
-ISA-consistent N8 x K64 logical LUT-W3A8 organization and validates it on the
-local Qwen3-0.6B-Base model.
+This repository contains a CPU numerical reference for a LUT-based W3A8
+configuration used in a Rubin-related study. It models the logical behavior
+and quantization recipe defined by this project; it is not a hardware emulator
+and does not make throughput, latency, energy, CUDA, PTX, or Tensor Core
+claims. The repository includes the implementation, tests, reproducibility
+checks, and recorded evaluation artifacts for inspection and reruns.
 
 The numerical definition is documented in
-[`docs/numerical_spec_v1.md`](docs/numerical_spec_v1.md). The measured result
-and limitations are in [`docs/final_report.md`](docs/final_report.md).
+[`docs/numerical_spec_v1.md`](docs/numerical_spec_v1.md), and the final
+technical report is [`docs/final_report.md`](docs/final_report.md).
 
-## Run
+## Environment and model
+
+The recorded environment is Python 3.14 (`.python-version`) with dependencies
+frozen by [`uv.lock`](uv.lock):
 
 ```bash
-uv sync
+uv sync --locked
+```
+
+Place the local checkpoint at `models/Qwen3-0.6B-Base`. The evaluator always
+uses `local_files_only=True`; it does not download or substitute another
+model.
+
+## Tests and sanity checks
+
+```bash
 uv run pytest -q
 uv run python scripts/sanity_linear.py
 uv run python scripts/sanity_block.py --model-path models/Qwen3-0.6B-Base
 ```
 
-The final evaluation uses CPU only and the fixed WikiText-2 protocol from the
-plan:
+The evaluator and full-model sanity path accept only `--device cpu`.
+
+## Reproduce the recorded results
+
+The recorded protocol uses Qwen3-0.6B-Base, WikiText-2 raw test, 1024-token
+sequences, 32768 evaluation tokens, seed 42, and CPU-only execution:
 
 ```bash
 uv run python scripts/eval_qwen.py --mode bf16 \
@@ -33,25 +52,24 @@ uv run python scripts/eval_qwen.py --mode w3a8 \
   --max-eval-tokens 32768 --device cpu --seed 42 \
   --output results/w3a8.json
 
-uv run python scripts/compare_results.py results/bf16.json results/w3a8.json \
+uv run python scripts/compare_results.py \
+  results/bf16.json results/w3a8.json \
   --output results/summary.csv
 ```
 
-The project pins PyTorch to its CPU wheel source through `uv`; no CUDA, PTX,
-Triton, or custom extension is used.
+`compare_results.py` refuses to write a summary when required experiment
+metadata differs or when `ppl` is not consistent with `exp(mean_nll)`.
 
-## Acceptance evidence
+## Recorded reference result
 
-The independent Gate A-D evidence is included in the repository:
+| Mode | mean NLL | PPL | ΔPPL | ΔPPL % |
+|---|---:|---:|---:|---:|
+| BF16 | 2.64401770896576 | 14.069617833591494 | — | — |
+| LUT-W3A8 | 3.3695883653031067 | 29.066559790365766 | 14.996941956774272 | 106.59096881060104% |
 
-- Numerical specification: [`docs/numerical_spec_v1.md`](docs/numerical_spec_v1.md)
-- Source implementation: [`src/rubin_w3a8/`](src/rubin_w3a8/)
-- Tests: [`tests/`](tests/)
-- Pytest evidence: [`results/pytest.log`](results/pytest.log)
-- Linear correctness evidence: [`results/sanity_linear.log`](results/sanity_linear.log)
-- Full Qwen forward evidence: [`results/sanity_block.log`](results/sanity_block.log)
-- Final PPL evidence: [`docs/final_report.md`](docs/final_report.md) and [`results/`](results/)
+Machine-readable results and acceptance logs are in
+[`results/`](results/). The complete interpretation and limitations are in
+[`docs/final_report.md`](docs/final_report.md).
 
-The 1.2 GB model weight file is intentionally not committed to Git; the local
-model directory is ignored and must be supplied separately at
-`models/Qwen3-0.6B-Base`.
+The 1.2 GB model weight file is intentionally not committed to Git. Supply it
+separately at `models/Qwen3-0.6B-Base`.

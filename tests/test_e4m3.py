@@ -1,7 +1,7 @@
 import pytest
 import torch
 
-from rubin_w3a8.e4m3 import e4m3_values, quantize_e4m3
+from src.e4m3 import e4m3_values, quantize_e4m3
 
 
 def test_grid_and_saturation() -> None:

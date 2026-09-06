@@ -1,6 +1,6 @@
 import torch
 
-from rubin_w3a8.lloyd_max import fit_lut_tiles
+from src.lloyd_max import fit_lut_tiles
 
 
 def test_lut_fit_shapes_validity_and_zero_tile() -> None:

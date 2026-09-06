@@ -5,22 +5,38 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import platform
 import random
+import subprocess
 import time
 from pathlib import Path
 
 import numpy as np
 import torch
 from datasets import load_dataset
+import transformers
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from rubin_w3a8 import convert_qwen_to_w3a8
+from src.qwen import convert_qwen_to_w3a8
 
 
 def _set_seed(seed: int) -> None:
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
+
+
+def _commit_sha() -> str:
+    try:
+        completed = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except (OSError, subprocess.CalledProcessError):
+        return "unknown"
+    return completed.stdout.strip()
 
 
 def _load_tokens(args: argparse.Namespace, tokenizer) -> torch.Tensor:
@@ -33,7 +49,7 @@ def _load_tokens(args: argparse.Namespace, tokenizer) -> torch.Tensor:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--mode", choices=("bf16", "w3a8"), required=True)
     parser.add_argument("--model-path", required=True)
     parser.add_argument("--dataset", default="Salesforce/wikitext")
@@ -41,7 +57,12 @@ def main() -> None:
     parser.add_argument("--split", default="test")
     parser.add_argument("--seq-len", type=int, default=1024)
     parser.add_argument("--max-eval-tokens", type=int, default=32768)
-    parser.add_argument("--device", default="cpu")
+    parser.add_argument(
+        "--device",
+        choices=("cpu",),
+        default="cpu",
+        help="Canonical evaluation is CPU-only.",
+    )
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
@@ -77,7 +98,7 @@ def main() -> None:
     mean_nll = total_nll / total_predicted if total_predicted else float("nan")
     ppl = math.exp(mean_nll) if math.isfinite(mean_nll) else float("nan")
     result = {
-        "spec_version": "phase2-v1",
+        "spec_version": "reference-v1",
         "model_path": str(Path(args.model_path).expanduser()),
         "mode": args.mode,
         "device": args.device,
@@ -91,6 +112,10 @@ def main() -> None:
         "ppl": ppl,
         "mean_nll": mean_nll,
         "runtime_seconds": time.perf_counter() - started,
+        "python_version": platform.python_version(),
+        "torch_version": torch.__version__,
+        "transformers_version": transformers.__version__,
+        "commit_sha": _commit_sha(),
     }
     if not math.isfinite(ppl):
         raise RuntimeError(f"non-finite PPL result: {result}")

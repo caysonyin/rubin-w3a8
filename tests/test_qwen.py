@@ -1,8 +1,8 @@
 import torch
 from torch import nn
 
-from rubin_w3a8.linear import CachedLUTLinear
-from rubin_w3a8.qwen import convert_qwen_to_w3a8
+from src.linear import CachedLUTLinear
+from src.qwen import convert_qwen_to_w3a8
 
 
 class TinyTransformer(nn.Module):

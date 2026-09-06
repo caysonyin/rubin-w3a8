@@ -1,6 +1,6 @@
 import torch
 
-from rubin_w3a8.grouping import (
+from src.grouping import (
     from_n8k64_tiles,
     pad_matrix,
     padded_shape,

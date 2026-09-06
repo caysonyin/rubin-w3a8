@@ -1,6 +1,6 @@
 import torch
 
-from rubin_w3a8.weight import quantize_weight, reconstruct_weight
+from src.weight import quantize_weight, reconstruct_weight
 
 
 def test_weight_quantize_reconstruct_non_multiple_shape() -> None:

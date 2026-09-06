@@ -1,18 +1,24 @@
 # Rubin LUT-W3A8 CPU Numerical Specification v1
 
+## Recorded reproducibility environment
+
+The recorded runtime is Python 3.14, as declared by `.python-version` and
+`pyproject.toml`. Dependencies are installed with `uv sync --locked` from
+`uv.lock`. The evaluation and full-model sanity paths are CPU-only; the CLI
+rejects other devices.
+
 ## Scope and evidence boundary
 
-This project is a CPU-only numerical reference for a Rubin-style LUT-W3A8
-model. Public ISA constraints motivate the logical organization: 3-bit Matrix
-B indices select one of eight E4M3 values, and the CPU reference uses an
-N8 x K64 logical tile. This organization is an ISA-consistent logical tile;
-it is not a claim about NVIDIA's undisclosed production quantizer or physical
-SMEM layout.
+This project is a CPU-only numerical reference for a LUT-based W3A8 model used
+in a Rubin-related study. The reference uses 3-bit indices to select one of
+eight E4M3 values and organizes values into an N8 x K64 logical tile. This is a
+project-level logical organization; it does not specify a deployed quantizer,
+hardware data layout, or hardware execution path.
 
 The project-defined parts are the FP32 scale representation, max-absolute
 scaling, padding, E4M3 software emulator, Lloyd initialization, and the Qwen
-evaluation protocol. Lloyd-Max and the scale recipe are not NVIDIA's official
-quantizer specification.
+evaluation protocol. Lloyd-Max and the scale recipe describe this reference
+implementation only.
 
 Out of scope: W3A16, W16A8, GPTQ, AWQ, Hadamard, Fisher, RMS2, K32, mixed
 precision, physical 3-bit packing, CUDA, PTX, Triton, C++ extensions,
@@ -103,14 +109,17 @@ softmax, and `lm_head` remain high precision.
 
 ## Evaluation and limitations
 
-The frozen model is the local `models/Qwen3-0.6B-Base` and all final runs use
-CPU. WikiText-2 test text entries are joined with `"\\n\\n"`, tokenized once
+The recorded model is the local `models/Qwen3-0.6B-Base` and all reported runs use
+CPU. Model and tokenizer loading use `local_files_only=True`. WikiText-2 test
+text entries are joined with `"\\n\\n"`, tokenized once
 without special tokens, truncated to 32768 tokens, and cropped to complete
 1024-token blocks. Each block predicts 1023 next tokens with `use_cache=False`.
-BF16 and W3A8 use the same sequence and FP32 cross-entropy metric.
+BF16 and W3A8 use the same sequence and FP32 cross-entropy metric. Each result
+also records the Python, PyTorch, Transformers, and repository commit metadata
+used for the run.
 
-This is a numerical CPU simulation, not a Rubin hardware implementation and
-not a performance benchmark. FP32 scales and the Lloyd-Max recipe are
-project-defined approximations. No accuracy-recovery method from supplemental
-materials is implemented, so a PPL penalty cannot by itself establish that
-Rubin LUT-W3 is unsuitable.
+This is a numerical CPU simulation, not a hardware implementation or a
+performance benchmark. FP32 scales and the Lloyd-Max recipe are
+implementation-specific choices. No accuracy-recovery method from supplemental
+materials is implemented, so the reported PPL should not be generalized to
+other implementations.

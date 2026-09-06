@@ -1,7 +1,7 @@
 [project]
-name = "task"
+name = "rubin-w3a8"
 version = "0.1.0"
-description = "Add your description here"
+description = "CPU numerical reference for Rubin LUT-W3A8"
 readme = "README.md"
 authors = [
     { name = "Linsheng Yin", email = "linsheng@builtbyyin.com" }
@@ -15,12 +15,13 @@ dependencies = [
     "transformers>=4.51,<5",
 ]
 
-[project.scripts]
-task = "task:main"
-
 [build-system]
 requires = ["uv_build>=0.12.10,<0.13.0"]
 build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "src"
+module-root = ""
 
 [tool.uv.sources]
 torch = { index = "pytorch-cpu" }
