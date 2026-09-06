@@ -1,4 +1,4 @@
-"""Run the frozen BF16 or LUT-W3A8 WikiText-2 perplexity protocol."""
+"""Run the frozen BF16, LUT-W3A16, or LUT-W3A8 WikiText-2 protocol."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ from datasets import load_dataset
 import transformers
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from src.qwen import convert_qwen_to_w3a8
+from src.qwen import convert_qwen_to_w3a16, convert_qwen_to_w3a8
 
 
 def _set_seed(seed: int) -> None:
@@ -50,7 +50,7 @@ def _load_tokens(args: argparse.Namespace, tokenizer) -> torch.Tensor:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--mode", choices=("bf16", "w3a8"), required=True)
+    parser.add_argument("--mode", choices=("bf16", "w3a16", "w3a8"), required=True)
     parser.add_argument("--model-path", required=True)
     parser.add_argument("--dataset", default="Salesforce/wikitext")
     parser.add_argument("--dataset-config", default="wikitext-2-raw-v1")
@@ -75,7 +75,9 @@ def main() -> None:
         local_files_only=True,
         torch_dtype=torch.bfloat16,
     ).to(args.device).eval()
-    if args.mode == "w3a8":
+    if args.mode == "w3a16":
+        model = convert_qwen_to_w3a16(model)
+    elif args.mode == "w3a8":
         model = convert_qwen_to_w3a8(model)
     tokens = _load_tokens(args, tokenizer)
     num_blocks = tokens.numel() // args.seq_len

@@ -23,11 +23,25 @@ def main() -> None:
                 bias = torch.randn(n, dtype=torch.float32) * 0.01
                 qweight = quantize_weight(weight)
                 x = torch.randn(m, k, dtype=torch.bfloat16)
-                y_lookup = reference_linear_lookup(x, qweight, bias)
-                x_hat = fake_quantize_activation_k64(x)
-                y_dense = torch.nn.functional.linear(x_hat, reconstruct_weight(qweight), bias).to(x.dtype)
-                torch.testing.assert_close(y_lookup, y_dense, rtol=1e-5, atol=1e-6)
-                assert torch.isfinite(y_lookup).all()
+                for quantize_activations in (True, False):
+                    y_lookup = reference_linear_lookup(
+                        x,
+                        qweight,
+                        bias,
+                        quantize_activations=quantize_activations,
+                    )
+                    x_hat = (
+                        fake_quantize_activation_k64(x)
+                        if quantize_activations
+                        else x.to(torch.float32)
+                    )
+                    y_dense = torch.nn.functional.linear(
+                        x_hat,
+                        reconstruct_weight(qweight),
+                        bias,
+                    ).to(x.dtype)
+                    torch.testing.assert_close(y_lookup, y_dense, rtol=1e-5, atol=1e-6)
+                    assert torch.isfinite(y_lookup).all()
     print("sanity_linear: PASS")
 
 

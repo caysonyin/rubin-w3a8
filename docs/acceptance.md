@@ -12,10 +12,11 @@ evaluation is CPU-only.
 | B — Regression | [`results/pytest.log`](../results/pytest.log) | PASS |
 | C — CPU reproducibility | `--device {cpu}` CLI plus deterministic smoke test | PASS |
 | D — BF16 evaluation | [`results/bf16.json`](../results/bf16.json) | PASS |
-| E — W3A8 evaluation | [`results/w3a8.json`](../results/w3a8.json) | PASS |
-| F — Result integrity | metadata and `PPL = exp(mean NLL)` validation in `compare_results.py` | PASS |
-| G — Accuracy comparison | [`results/summary.csv`](../results/summary.csv) | PASS |
-| H — Documentation | [`README.md`](../README.md) and [`docs/final_report.md`](final_report.md) | PASS |
+| E — W3A16 evaluation | [`results/w3a16.json`](../results/w3a16.json) | PASS |
+| F — W3A8 evaluation | [`results/w3a8.json`](../results/w3a8.json) | PASS |
+| G — Result integrity | metadata and `PPL = exp(mean NLL)` validation in `compare_results.py` | PASS |
+| H — Accuracy comparison and NLL attribution | [`results/summary.csv`](../results/summary.csv), [`results/attribution.csv`](../results/attribution.csv) | PASS |
+| I — Documentation | [`README.md`](../README.md) and [`docs/final_report.md`](final_report.md) | PASS |
 
 ## Reproduction commands
 
@@ -27,13 +28,13 @@ uv run python scripts/sanity_block.py \
   --model-path models/Qwen3-0.6B-Base --device cpu
 ```
 
-The two evaluator commands and the comparison command are documented in the
+The three evaluator commands and the comparison command are documented in the
 README. The evaluator records model, protocol, runtime, and repository metadata
-in each JSON result. Historical PPL values are reproduced within the specified
-tolerances, with the earlier records available through Git history.
+in each JSON result. The comparison records three rows and uses mean NLL for
+the W3 weight and activation quantization attribution.
 
 ## Scope stop
 
-No layer-sensitivity study, accuracy-recovery method, CUDA/PTX/Triton path,
-physical packing, performance benchmark, additional model, or additional
+No W16A8, layer-sensitivity study, accuracy-recovery method, CUDA/PTX/Triton
+path, physical packing, performance benchmark, additional model, or additional
 downstream benchmark is included in the current reference.

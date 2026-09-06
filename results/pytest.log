@@ -1,4 +1,4 @@
 Command: uv run pytest -q
 
-..............                                                           [100%]
-14 passed in 1.01s
+...................                                                      [100%]
+19 passed in 1.63s

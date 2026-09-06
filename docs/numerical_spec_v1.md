@@ -1,4 +1,4 @@
-# Rubin LUT-W3A8 CPU Numerical Specification v1
+# Rubin LUT-W3A8/W3A16 CPU Numerical Specification v1
 
 ## Recorded reproducibility environment
 
@@ -9,19 +9,19 @@ rejects other devices.
 
 ## Scope and evidence boundary
 
-This project is a CPU-only numerical reference for a LUT-based W3A8 model used
-in a Rubin-related study. The reference uses 3-bit indices to select one of
-eight E4M3 values and organizes values into an N8 x K64 logical tile. This is a
-project-level logical organization; it does not specify a deployed quantizer,
-hardware data layout, or hardware execution path.
+This project is a CPU-only numerical reference for LUT-based W3A8 and W3A16
+models used in a Rubin-related study. Both modes use 3-bit indices to select
+one of eight E4M3 values and organize values into an N8 x K64 logical tile.
+This is a project-level logical organization; it does not specify a deployed
+quantizer, hardware data layout, or hardware execution path.
 
 The project-defined parts are the FP32 scale representation, max-absolute
 scaling, padding, E4M3 software emulator, Lloyd initialization, and the Qwen
 evaluation protocol. Lloyd-Max and the scale recipe describe this reference
 implementation only.
 
-Out of scope: W3A16, W16A8, GPTQ, AWQ, Hadamard, Fisher, RMS2, K32, mixed
-precision, physical 3-bit packing, CUDA, PTX, Triton, C++ extensions,
+Out of scope: W16A8, GPTQ, AWQ, Hadamard, Fisher, RMS2, K32, mixed precision
+policies, physical 3-bit packing, CUDA, PTX, Triton, C++ extensions,
 TensorRT, K3V3, MoE, Qwen3-4B, and performance claims.
 
 ## Weight orientation and logical tile
@@ -91,18 +91,24 @@ s_A[m,h]=\max_{k\in K_h}|A[m,k]|/448,
 \]
 
 with `s_A = 1` for an all-zero block. Normalize, E4M3-quantize, restore the
-FP32 scale, and crop away K padding. The returned activation is FP32.
+FP32 scale, and crop away K padding. The returned activation is FP32. This
+activation quantization is used by W3A8. W3A16 preserves the BF16 activation
+values produced by the model and only promotes them to FP32 for accumulation;
+it does not call `fake_quantize_activation_k64`.
 
 ## Linear and Qwen paths
 
-The numerical linear model is FP32 accumulation of fake-quantized activations
-and reconstructed weights plus FP32 bias. The result is cast back to the
-incoming input dtype, normally BF16. Bias is not W3-quantized.
+The W3A8 numerical linear model is FP32 accumulation of fake-quantized
+activations and reconstructed weights plus FP32 bias. W3A16 uses the original
+BF16 activation values instead of activation fake quantization, while keeping
+the same FP32 accumulation and reconstructed W3 weights. Both results are
+cast back to the incoming input dtype, normally BF16. Bias is not W3-quantized.
 
 The explicit index-to-LUT path is a correctness oracle for small matrices. The
 Qwen path reconstructs each quantized weight once and caches a dense FP32
-weight. Every forward only fake-quantizes activations and calls `F.linear`
-with the cached weight; it never performs Python-level per-forward LUT lookup.
+weight. W3A8 fake-quantizes activations on every forward; W3A16 uses the
+incoming BF16 activations directly. Both call `F.linear` with the cached
+weight and never perform Python-level per-forward LUT lookup.
 Only `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, and
 `down_proj` inside transformer layers are replaced. Embeddings, RMSNorm, RoPE,
 softmax, and `lm_head` remain high precision.
@@ -114,9 +120,12 @@ CPU. Model and tokenizer loading use `local_files_only=True`. WikiText-2 test
 text entries are joined with `"\\n\\n"`, tokenized once
 without special tokens, truncated to 32768 tokens, and cropped to complete
 1024-token blocks. Each block predicts 1023 next tokens with `use_cache=False`.
-BF16 and W3A8 use the same sequence and FP32 cross-entropy metric. Each result
-also records the Python, PyTorch, Transformers, and repository commit metadata
-used for the run.
+BF16, W3A16, and W3A8 use the same sequence and FP32 cross-entropy metric. Each
+result also records the Python, PyTorch, Transformers, and repository commit
+metadata used for the run. W3A16 is the weight-only diagnostic: compared with
+BF16 it isolates W3 weight quantization, and compared with W3A8 it exposes the
+additional activation quantization increment. These increments are computed
+on mean NLL; PPL is reported for readability and is not additively decomposed.
 
 This is a numerical CPU simulation, not a hardware implementation or a
 performance benchmark. FP32 scales and the Lloyd-Max recipe are

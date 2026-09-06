@@ -19,3 +19,33 @@ def test_reference_matches_dense_reconstruction_and_cached_module() -> None:
     torch.testing.assert_close(y_cached, y_dense, rtol=1e-5, atol=1e-6)
     assert y_cached.dtype == x.dtype
     assert torch.isfinite(y_cached).all()
+
+
+def test_w3a16_preserves_bfloat16_activations_before_fp32_accumulation() -> None:
+    torch.manual_seed(2)
+    weight = torch.randn(16, 128, dtype=torch.float32) * 0.05
+    bias = torch.randn(16, dtype=torch.float32)
+    qweight = quantize_weight(weight)
+    x = torch.randn(4, 128, dtype=torch.bfloat16)
+
+    y_lookup = reference_linear_lookup(
+        x,
+        qweight,
+        bias,
+        quantize_activations=False,
+    )
+    y_dense = torch.nn.functional.linear(
+        x.to(torch.float32),
+        reconstruct_weight(qweight),
+        bias,
+    ).to(x.dtype)
+    y_cached = CachedLUTLinear(
+        qweight,
+        bias,
+        quantize_activations=False,
+    )(x)
+
+    torch.testing.assert_close(y_lookup, y_dense, rtol=1e-5, atol=1e-6)
+    torch.testing.assert_close(y_cached, y_dense, rtol=1e-5, atol=1e-6)
+    assert y_cached.dtype == x.dtype
+    assert torch.isfinite(y_cached).all()

@@ -1,0 +1,4 @@
+component,from_mode,to_mode,mean_nll_delta,mean_nll_delta_percent_of_total
+weight_quantization,BF16,W3A16,0.7204240293679933,99.29067873343539
+activation_quantization_on_w3_weights,W3A16,W3A8,0.005146626969353196,0.7093212665646067
+total_quantization,BF16,W3A8,0.7255706563373465,100.0

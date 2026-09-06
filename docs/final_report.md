@@ -1,15 +1,15 @@
-# Rubin LUT-W3A8 CPU Numerical Reference — Final Report
+# Rubin LUT-W3A8/W3A16 CPU Numerical Reference — Final Report
 
 ## 1. Project scope and contents
 
-This repository contains a CPU numerical reference for a LUT-based W3A8
-configuration, together with its numerical specification, tests,
+This repository contains a CPU numerical reference for LUT-based W3A8 and
+W3A16 configurations, together with its numerical specification, tests,
 reproducibility checks, and recorded Qwen evaluation results.
 
 The scope is deliberately limited to a CPU numerical reference. It does not
 model any particular hardware implementation or benchmark hardware performance.
 
-## 2. Rubin LUT-W3A8 numerical semantics
+## 2. Rubin LUT-W3A8/W3A16 numerical semantics
 
 The logical representation stores a 3-bit index for each weight value. The
 index selects one of eight E4M3 values in a tile-local LUT:
@@ -54,7 +54,7 @@ E4M3 emulator
     -> E4M3-constrained Lloyd-Max LUT fitting
     -> 3-bit LUT indices
     -> dense FP32 reconstruction for the Qwen path
-    -> fake-quantized activations
+    -> BF16 activations for W3A16 or fake-quantized activations for W3A8
     -> FP32 accumulation
 ```
 
@@ -78,36 +78,48 @@ caches the dense FP32 weight. Only `q_proj`, `k_proj`, `v_proj`, `o_proj`,
 | Cache | `use_cache=False` |
 
 The environment is Python 3.14 with dependencies from `uv.lock`, installed by
-`uv sync --locked`. Both modes tokenize the same joined WikiText-2 text and
-use summed FP32 cross-entropy to compute mean NLL and PPL.
+`uv sync --locked`. All modes tokenize the same joined WikiText-2 text and use
+summed FP32 cross-entropy to compute mean NLL and PPL. W3A16 preserves the
+model's BF16 activation values and only promotes them to FP32 for accumulation;
+it is not an IEEE FP16 path.
 
 ## 6. Results
 
 The recorded evaluation produced the following reference results:
 
-| Mode | mean NLL | PPL | ΔPPL | ΔPPL % |
+| Mode | mean NLL | PPL | Δmean NLL | ΔPPL |
 |---|---:|---:|---:|---:|
 | BF16 | 2.64401770896576 | 14.069617833591494 | — | — |
-| LUT-W3A8 | 3.3695883653031067 | 29.066559790365766 | 14.996941956774272 | 106.59096881060104% |
+| LUT-W3A16 | 3.3644417383337535 | 28.917349344449057 | 0.7204240293679933 | 14.847731510857564 |
+| LUT-W3A8 | 3.3695883653031067 | 29.066559790365766 | 0.7255706563373465 | 14.996941956774272 |
 
 The machine-readable results are [`results/bf16.json`](../results/bf16.json),
-[`results/w3a8.json`](../results/w3a8.json), and
-[`results/summary.csv`](../results/summary.csv). Runtime is
-recorded as execution metadata only; it is not a Rubin performance comparison.
+[`results/w3a16.json`](../results/w3a16.json),
+[`results/w3a8.json`](../results/w3a8.json),
+[`results/summary.csv`](../results/summary.csv), and
+[`results/attribution.csv`](../results/attribution.csv). Runtime is recorded as
+execution metadata only; it is not a Rubin performance comparison.
 
-The BF16 result agrees with the historical reference PPL `14.0696178336`
-within the specified tolerance. The W3A8 result agrees with the historical
-reference PPL `29.0665597904` within the specified tolerance. The result
-comparison first checks the shared experiment metadata and verifies
-`PPL = exp(mean NLL)` within the configured numerical tolerance.
+The result comparison first checks shared experiment metadata and verifies
+`PPL = exp(mean NLL)` within the configured numerical tolerance. The
+W3A16 → W3A8 activation quantization increment is `0.005146626969353196`
+mean NLL, compared with the total BF16 → W3A8 increment of
+`0.7255706563373465`. The `attribution.csv` file uses mean NLL differences to
+separate BF16 → W3A16 weight quantization from the additional W3A16 → W3A8
+activation quantization; PPL differences are descriptive and are not treated
+as additive.
 
 ## 7. Interpretation
 
-In this fixed run, the W3A8 configuration reports a higher PPL than the BF16
-configuration on the Qwen3-0.6B-Base / WikiText-2 protocol. This observation
-applies to the recorded numerical recipe and experiment; it should not be
-generalized to other quantizers, models, datasets, or hardware
-implementations.
+The three-mode interpretation is restricted to the fixed
+Qwen3-0.6B-Base / WikiText-2 protocol. W3A16 isolates the effect of W3 weight
+quantization, while the W3A16 → W3A8 difference measures the additional effect
+of activation quantization under the same W3 weight path. In this run, weight
+quantization accounts for `99.29067873343539%` of the total mean-NLL increase,
+while the activation quantization increment accounts for
+`0.7093212665646067%`. These observations apply only to the recorded numerical
+recipe and experiment; they should not be generalized to other quantizers,
+models, datasets, or hardware implementations.
 
 ## 8. Limitations
 
@@ -123,7 +135,7 @@ implementations.
 
 ## 9. Future work
 
-Possible extensions include W3A16/W16A8 diagnostics, layer-sensitivity
-definitions, RMS²-weighted Lloyd fitting, Hadamard transforms, GPTQ, LUT
-refitting, K32 studies, mixed precision, and a native Rubin kernel. These are
-not part of the current reference implementation.
+Possible extensions include W16A8 diagnostics, layer-sensitivity definitions,
+RMS²-weighted Lloyd fitting, Hadamard transforms, GPTQ, LUT refitting, K32
+studies, mixed precision, and a native Rubin kernel. These are not part of the
+current reference implementation.

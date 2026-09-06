@@ -12,9 +12,9 @@
   "seed": 42,
   "ppl": 14.069617833591494,
   "mean_nll": 2.64401770896576,
-  "runtime_seconds": 112.17275610399884,
+  "runtime_seconds": 76.64809137200018,
   "python_version": "3.14.4",
   "torch_version": "2.14.0+cpu",
   "transformers_version": "4.57.6",
-  "commit_sha": "af42bec19a698049202c6e21c3a940a9dabefb0d"
+  "commit_sha": "82d8f30ce8ede70d9251e16c6f353381ee9cae67"
 }

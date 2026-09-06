@@ -1,7 +1,7 @@
 [project]
 name = "rubin-w3a8"
 version = "0.1.0"
-description = "CPU numerical reference for Rubin LUT-W3A8"
+description = "CPU numerical reference for Rubin LUT-W3A8 and LUT-W3A16"
 readme = "README.md"
 authors = [
     { name = "Linsheng Yin", email = "linsheng@builtbyyin.com" }

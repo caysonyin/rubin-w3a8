@@ -32,14 +32,18 @@ def _lookup_weight(qweight: LUTWeight) -> torch.Tensor:
 
 
 def reference_linear_lookup(
-    x: torch.Tensor, qweight: LUTWeight, bias: torch.Tensor | None = None
+    x: torch.Tensor,
+    qweight: LUTWeight,
+    bias: torch.Tensor | None = None,
+    *,
+    quantize_activations: bool = True,
 ) -> torch.Tensor:
-    """Run explicit LUT lookup plus K64 activation quantization."""
+    """Run explicit LUT lookup with optional K64 activation quantization."""
 
     if x.shape[-1] != qweight.original_shape[1]:
         raise ValueError("x K dimension does not match qweight")
     input_dtype = x.dtype
-    x_hat = fake_quantize_activation_k64(x)
+    x_hat = fake_quantize_activation_k64(x) if quantize_activations else x.to(torch.float32)
     weight_hat = _lookup_weight(qweight)
     bias_fp32 = bias.to(torch.float32) if bias is not None else None
     y_fp32 = F.linear(x_hat.to(torch.float32), weight_hat.to(torch.float32), bias_fp32)
@@ -49,7 +53,13 @@ def reference_linear_lookup(
 class CachedLUTLinear(nn.Module):
     """A Linear module with one-time dense LUT-W3 reconstruction."""
 
-    def __init__(self, qweight: LUTWeight, bias: torch.Tensor | None = None) -> None:
+    def __init__(
+        self,
+        qweight: LUTWeight,
+        bias: torch.Tensor | None = None,
+        *,
+        quantize_activations: bool = True,
+    ) -> None:
         super().__init__()
         self.register_buffer("indices", qweight.indices.detach().clone())
         self.register_buffer("luts", qweight.luts.detach().clone())
@@ -61,6 +71,7 @@ class CachedLUTLinear(nn.Module):
             self.bias = None
         self.original_shape = qweight.original_shape
         self.padded_shape = qweight.padded_shape
+        self.quantize_activations = quantize_activations
 
     @property
     def qweight(self) -> LUTWeight:
@@ -74,7 +85,11 @@ class CachedLUTLinear(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         input_dtype = x.dtype
-        x_hat = fake_quantize_activation_k64(x)
+        x_hat = (
+            fake_quantize_activation_k64(x)
+            if self.quantize_activations
+            else x.to(torch.float32)
+        )
         y_fp32 = F.linear(
             x_hat.to(torch.float32),
             self.weight_hat.to(torch.float32),
