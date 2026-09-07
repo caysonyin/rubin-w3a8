@@ -86,6 +86,32 @@ quantization. The complete interpretation and limitations are in
 The 1.2 GB model weight file is intentionally not committed to Git. Supply it
 separately at `models/Qwen3-0.6B-Base`.
 
+## Publication figures
+
+The following English academic-style figures summarize the fixed comparison.
+They are generated from
+[`results/quantization_comparison/summary.csv`](results/quantization_comparison/summary.csv):
+
+![Architecture and method flow](results/figures/architecture_method_flow.png)
+
+*Figure 1. Architecture and method flow for the shared BF16 input path and the two W3 recipes.*
+
+![PPL comparison](results/figures/ppl_comparison.png)
+
+*Figure 2. PPL comparison, highlighting the W3A8 change from 29.07 to 22.22 while retaining the BF16 reference at 14.07.*
+
+The complete five-row table is also available as the standalone PNG artifact
+[`results/figures/main_results_table.png`](results/figures/main_results_table.png);
+it is not embedded here because the README already contains the corresponding
+numeric tables. Regenerate all figures with:
+
+```bash
+python3 scripts/generate_figures.py
+```
+
+The figure renderer requires Ghostscript (`gs`) and emits high-resolution PNG
+exports.
+
 ## Additional quantization comparison
 
 A separate CPU experiment compares plain Lloyd-Max with signed H64 + K64
