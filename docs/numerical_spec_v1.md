@@ -64,6 +64,13 @@ clusters by their mean, snaps the means to E4M3, and then reassigns. Empty
 clusters retain their previous centroid; duplicate snapped centroids are valid.
 The iteration limit is 50 and assignments are checked for stability.
 
+The limit counts centroid updates. Before returning, values are assigned to
+the final snapped LUT once more, even when the limit is reached; this final
+assignment does not add a centroid update. Returned indices therefore refer
+to the returned LUT. Initialization and updates handle valid counts separately
+for each tile, including tiles with no valid values. Changing excluded padding
+values does not change the LUT or the indices of valid values.
+
 The full representation is tensorized:
 
 ```text
@@ -80,6 +87,23 @@ round-to-nearest-even, and finite saturation. The finite range is `[-448,448]`;
 values outside it saturate to the corresponding endpoint. Where the installed
 PyTorch CPU build supports `torch.float8_e4m3fn`, tests compare the emulator
 against an in-range cast reference. Overflow behavior is tested separately.
+
+The emulator uses E4M3FN: exponent bias 7, exponent field 0 for zero and
+subnormals, fields 1--14 with mantissas 0--7, and field 15 with mantissas
+0--6 for finite values. Field 15 with mantissa 7 encodes NaN for either sign;
+there is no infinity encoding. The smallest positive subnormal is `2^-9`,
+the smallest positive normal is `2^-6`, and the largest finite value is 448.
+Rounding ties use the even least-significant mantissa bit, including ties
+between exponent ranges. Inputs are converted to FP32 before quantization;
+input infinities saturate to `+/-448`, NaNs remain NaN, and signed zero is
+preserved.
+
+`tests/test_baseline_regressions.py` decodes all finite byte patterns as an
+independent reference and checks their midpoints and adjacent FP32 values,
+special values, non-contiguous FP32/BF16 inputs, padding and masks, and final
+LUT/index consistency. Native PyTorch FP8 casts are used only as a numerical
+test oracle when available, including a small padded Linear comparison; they
+do not select a hardware execution path or establish hardware performance.
 
 ## Activation scaling
 
