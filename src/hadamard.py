@@ -25,3 +25,13 @@ def rotate(x: torch.Tensor, signs: torch.Tensor) -> torch.Tensor:
         left, right = paired[..., 0, :], paired[..., 1, :]
         blocks = torch.stack((left + right, left - right), dim=-2).reshape_as(blocks)
     return (blocks / 8).reshape(shape)
+
+
+def inverse_rotate(x: torch.Tensor, signs: torch.Tensor) -> torch.Tensor:
+    """Apply R.T = H64 D / 8; the signed forward rotation is not its inverse."""
+    if x.shape[-1] % 64 or signs.shape != (x.shape[-1] // 64, 64):
+        raise ValueError("Hadamard signs and K64 input dimensions mismatch")
+    if not torch.all((signs == 1) | (signs == -1)):
+        raise ValueError("Hadamard signs must be +/-1")
+    unsigned = rotate(x, torch.ones_like(signs))
+    return (unsigned.reshape(-1, signs.shape[0], 64) * signs.float()).reshape(x.shape)

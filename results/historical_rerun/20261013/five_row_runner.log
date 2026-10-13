@@ -1,0 +1,6 @@
+Running bf16
+Running plain_w3a16
+Running plain_w3a8
+Running h64_gptq_refit_w3a16
+Running h64_gptq_refit_w3a8
+Five-row comparison and baseline reproduction: PASS

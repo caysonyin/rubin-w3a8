@@ -1,4 +1,11 @@
-# Rubin LUT-W3A8/W3A16 CPU Numerical Reference — Final Report
+# Rubin LUT-W3A8/W3A16 CPU Numerical Reference — Original Reference Report
+
+This report preserves the original three-mode reference experiment and its
+interpretation. Subsequent accepted work is recorded in the
+[two-recipe comparison](quantization_comparison.md) and
+[Plan A diagnostic results](layerwise_diagnostics.md).
+The latest execution completed on 2026-10-14 and reproduced all eight
+historical evaluation rows exactly; see the [acceptance record](acceptance.md).
 
 ## 1. Project scope and contents
 
@@ -133,12 +140,12 @@ models, datasets, or hardware implementations.
 - Results cover one local model, one dataset, one split, and one fixed token
   protocol.
 
-## 9. Future work
+## 9. Subsequent accepted work
 
-Possible extensions include W16A8 diagnostics, layer-sensitivity definitions,
-RMS²-weighted Lloyd fitting, Hadamard transforms, GPTQ, LUT refitting, K32
-studies, mixed precision, and a native Rubin kernel. These are not part of the
-current reference implementation.
+The original scope above remains the basis of the three-mode interpretation.
+The repository now also contains the separately authorized fixed H64 + GPTQ +
+LUT-refit comparison and Plan A layerwise diagnostics. Their acceptance,
+evidence, and limitations are recorded separately below.
 
 ## Additional quantization recipe comparison
 
@@ -148,3 +155,26 @@ under the same local model, CPU, scale format, and test protocol. See
 [the experiment report](quantization_comparison.md) and
 [`results/quantization_comparison/`](../results/quantization_comparison/).
 This extension does not revise the historical Phase 2/3 acceptance results.
+
+## Historical rerun and Plan A diagnostics
+
+The [complete historical rerun](../results/historical_rerun/20261013/report.md)
+executed the three original rows and all five recipe-comparison rows.
+All mean-NLL and PPL deltas from the historical artifacts were exactly zero.
+Rebuilt payloads matched both recorded fingerprints, and the original linear
+and full-model sanity checks passed. The current engineering record contains
+91 passing tests with zero skips.
+
+[Plan A](update_plan_a.md) subsequently measured local outputs on fixed
+BF16-teacher inputs, using 1,024-token smoke and 4,096-token validation stages.
+Implementation, historical baseline, smoke, and experiment acceptance all
+passed. B1 lowers relative output error in 170/196 layers in both A16/A8;
+24 `o_proj` and two `down_proj` layers worsen, with no ties.
+Relative weight reconstruction error and activation increment MSE increase
+in all 196 matched layers. The [diagnostic report](layerwise_diagnostics.md)
+contains projection summaries, the two heatmaps, signed A8 Teacher MSE changes,
+and independent verification sources.
+
+The local-output results concern the combined recipe under the fixed
+teacher-input protocol. They do not measure layer PPL sensitivity or isolate
+the effects of individual H64, GPTQ, and refitting steps.

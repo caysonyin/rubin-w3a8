@@ -1,0 +1,10 @@
+{
+  "model_id": "Qwen/Qwen3-0.6B-Base",
+  "model_revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+  "dataset_id": "Salesforce/wikitext",
+  "dataset_config": "wikitext-2-raw-v1",
+  "dataset_revision": "b08601e04326c79dfdd32d625aee71d232d685c3",
+  "dataset_cache": "models/wiki-cache",
+  "numeric_package_versions": "unchanged from historical uv.lock",
+  "wheel_integrity": "original lockfile SHA256 retained during mirror transport"
+}

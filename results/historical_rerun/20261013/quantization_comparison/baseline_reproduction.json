@@ -1,0 +1,17 @@
+{
+  "bf16": {
+    "delta_mean_nll": 0.0,
+    "delta_ppl": 0.0,
+    "pass": true
+  },
+  "w3a16": {
+    "delta_mean_nll": 0.0,
+    "delta_ppl": 0.0,
+    "pass": true
+  },
+  "w3a8": {
+    "delta_mean_nll": 0.0,
+    "delta_ppl": 0.0,
+    "pass": true
+  }
+}

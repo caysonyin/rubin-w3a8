@@ -4,7 +4,7 @@ This record summarizes the repository's reproducibility checks and recorded
 evaluation artifacts. The runtime is Python 3.14 with `uv.lock`, and all model
 evaluation is CPU-only.
 
-## Executed gates
+## Original reference acceptance
 
 | Gate | Evidence | Status |
 |---|---|---|
@@ -42,3 +42,48 @@ downstream benchmark was included in the original Phase 2/3 acceptance scope.
 The subsequently authorized H64 + GPTQ + LUT-refit comparison is documented
 separately in [quantization_comparison.md](quantization_comparison.md); it
 does not retroactively change the gates above.
+
+## Current acceptance completed on 2026-10-14
+
+The subsequent Plan A work is accepted independently of the historical
+Phase 2/3 gates. Its [final protocol](update_plan_a.md) fixes the numerical
+definitions, dataset protocol, recipes, experiment size, and deliverables.
+The [diagnostic result report](layerwise_diagnostics.md) records the measured
+outcomes and their interpretation.
+
+| Gate | Result | Evidence |
+|---|---|---|
+| Implementation Acceptance | PASS; 91 tests, zero skips, PNG/PDF test passed | [Engineering record](../results/layerwise_diagnostics/implementation_acceptance.json), [test log](../results/layerwise_diagnostics/implementation_tests.log) |
+| Original sanity checks | PASS; linear and full Qwen path | [Linear log](../results/historical_rerun/20261013/sanity_linear.log), [block log](../results/historical_rerun/20261013/sanity_block.log) |
+| Full historical reproduction | PASS; all eight NLL/PPL deltas exactly zero | [Historical report](../results/historical_rerun/20261013/report.md), [manifest](../results/historical_rerun/20261013/manifest.json) |
+| Historical Baseline Acceptance | PASS; exact checkpoint, tokenizer, calibration/test tokens, and both payload identities | [Preflight and execution manifest](../results/layerwise_diagnostics/20261014/manifest.json) |
+| Smoke Acceptance | PASS; 1,024 validation tokens, full fixed layer coverage | [Smoke manifest](../results/layerwise_diagnostics/20261014/smoke/manifest.json) |
+| Experiment Acceptance | PASS; 4,096 validation tokens, fixed CSV coverage, exact controls and smoke-prefix checks, independent output reductions and weight reconstruction | [Full manifest](../results/layerwise_diagnostics/20261014/full/manifest.json) |
+| Recorded deliverables | Four CSVs, two PNG/PDF figures, tokens, manifests and reports | [Accepted run](../results/layerwise_diagnostics/20261014/) |
+
+The original three modes and canonical five-row comparison were evaluated
+again in full; the latter includes the shared BF16 and both recipes in A16/A8.
+The original reference result files remain the comparison source. Numeric
+dependencies retain their historical locked versions; the optional `plots`
+extra adds the diagnostic figure renderer.
+
+Implementation Acceptance depends on independent engineering evidence and its
+source fingerprints. It can pass when model, data, or payload resources are
+unavailable. Experiment Acceptance requires successful preflight, strict
+historical identities, a passing smoke stage, and full diagnostics. Missing
+resources produce BLOCKED status, and fingerprint mismatch fails historical
+acceptance. A rebuilt or cross-platform payload cannot be silently accepted
+as the original baseline. The
+[earlier blocked preflight](../results/layerwise_diagnostics/20261013-preflight/manifest.json)
+remains a separate record and is not the accepted experiment.
+
+Output metrics are recomputed from `block_stats.csv` sufficient statistics;
+this checks reductions without claiming an independent forward. Weight error
+is independently rebuilt from the original checkpoint and frozen payload,
+including B1 inverse rotation. Both use the fixed recomputation tolerance,
+separate from the B1−B0 improvement classification threshold.
+
+Current scope is the fixed two-recipe diagnostic experiment. It does not
+establish layer PPL sensitivity, individual H64/GPTQ/refit attribution, a new
+recovery method, an additional model/benchmark, or a hardware performance
+result. Reproduction commands are in the [README](../README.md).

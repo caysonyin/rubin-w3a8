@@ -1,0 +1,281 @@
+{
+  "experiment_version": "layerwise-diagnostics-v1",
+  "schema_version": "layerwise-diagnostics-csv-v1",
+  "epsilon": 1e-12,
+  "comparison_atol": 1e-08,
+  "comparison_rtol": 1e-06,
+  "implementation_acceptance": "PASS",
+  "implementation_evidence": {
+    "evidence": "results/layerwise_diagnostics/implementation_acceptance.json",
+    "log": "results/layerwise_diagnostics/implementation_tests.log"
+  },
+  "historical_baseline_acceptance": "PASS",
+  "smoke_acceptance": "PASS",
+  "experiment_acceptance": "PASS",
+  "source_fingerprints": {
+    "docs/update_plan_a.md": "d2987d958336e545cbbad3032c9b80269fa43c6d1600334534956379d60c9dad",
+    "pyproject.toml": "0f742a47dae352d079cab295144e95ce43c72c2ceaa635d7aef26bac5be6e6bd",
+    "scripts/check_layerwise_implementation.py": "9fd5dfb48261392d61dd75349d08baf762cc7860d320214184674d1e2b21855f",
+    "scripts/compare_quantization.py": "f9f4a7329bde0e13911b3397460024fce595dc4a900837d347a02762f5d2226a",
+    "scripts/compare_results.py": "05654babef0c83768998565304cf733dd9e62bde4892dce7d85eceaffb804995",
+    "scripts/diagnose_layers.py": "af2d84843f88e9984203e17ae4a992696779dc65f8462e6be20a6e8e1f4ea388",
+    "scripts/diagnostic_protocol.py": "7d195bb1171f3b40cedecef3095949274c90b308a2e5b05c200300c9e4bb6dae",
+    "scripts/eval_qwen.py": "ff893df57b4ff8b5b3d8660f96abe5bbb27b69d18acbe25339c6bf135ebc4301",
+    "scripts/generate_figures.py": "cabfd79fbf3d782feb98e3c0df7f2c8114239bab09acc15ccb181dd49632b83a",
+    "scripts/plot_layer_diagnostics.py": "9060a48e1275001ce77c4a8acb532c86a00a7e11f2b861fd237de1f0f729797c",
+    "scripts/reproduce_history.py": "afebc67207bbf63bcd8bba7674acaf38939b09fb34db1e34bf59f1a36785f364",
+    "scripts/run_quantization_comparison.py": "668fa19dee392b0888e91df39e3754fb3a1fa3ec3ca06d7a530c997e771870df",
+    "scripts/sanity_block.py": "94fd3b3bc97ac08efbedd5dbe20c373e3e421004ee18a844661d8827906cc534",
+    "scripts/sanity_linear.py": "a32885ae9fcd3c6bb8ecf2a4e68cfa77ac3c67e92c94b4cabf753610c7895b8f",
+    "src/__init__.py": "ef84bc20f58acad2274645e41cdda2b4e25f747b611e0c7ecd5b853c5d2cf37c",
+    "src/activation.py": "d34d46491dc422711b17079214daf76d20c0a3d209df077cf676e2da72c63a8d",
+    "src/diagnostics.py": "facb47de01ace55a62f11b3f66b32a464c62a88e9e31955a03aeedf3528fe5bc",
+    "src/e4m3.py": "c742360fb68d47eeb8ed8d8761e5296504285467cc532bc4dd2e52030e3c5b9e",
+    "src/experiment.py": "bf07d581044ea73023cb90769e4553de72bc1896ca0c05fd406b8e1af9a058cd",
+    "src/gptq.py": "b6f1258188d735fee7878b0be257f0bc2d2d728eb9e7e1952219eaf47d602cf0",
+    "src/grouping.py": "a2fdd3751559992ebddb1e1bcfcff1893819ce33c5b7f414b12292035ecedf46",
+    "src/hadamard.py": "92a0818608d5ee20d3e63eaf7e209d81ccedf98392439396275891198a3cc669",
+    "src/linear.py": "adaae583c800ad980fcb82839e5feb26c7f0c96bd31e373228eadba17d820312",
+    "src/lloyd_max.py": "b2392b0be44b17ce50beb8e2af328a44dd3eb810e938c440bf769930daf031cc",
+    "src/qwen.py": "279bd8c2c8ddfbc2b16e3066865e5be128520d3cfa0dd0182b84c4d8c999dab4",
+    "src/scales.py": "4490fc95fac75aacb6aec1c98a1af020c6e135c2842e4ed4f7050d9bb55ebab5",
+    "src/weight.py": "e080bb35ccce478278104e243fa9d0f32cfa4e34d9aee8260ef3777fc859b3a9",
+    "tests/test_baseline_regressions.py": "bc553f417a58b39a2007de7bb84640b90f22aa8bc5f2bff9c80c0f18eceb32c1",
+    "tests/test_compare_results.py": "7db23c62f2648dd5742d691a16385d6502aba03cb86c7c4dbb7d306fca98fa5c",
+    "tests/test_determinism.py": "85065e33263de39ea655b061a74b2e4629216ea377776f1951a7060e31a7aad3",
+    "tests/test_e4m3.py": "66ebdebd68515a525ee8bd0a704412c1640c1106831aa3dd1008155afd5d2692",
+    "tests/test_grouping.py": "588be625cbdc58748952b184d9b06617d4aa8a3b8d6079288616370834e64e32",
+    "tests/test_layerwise_diagnostics.py": "9fb01a68d035a68677c8691796c1666a4baf1dccb0486df03005f04526303d71",
+    "tests/test_linear.py": "19c70bf5eae2e3b2e800d2d4e305e67f9e07bad41a9734adb39ce0197cd646e4",
+    "tests/test_lloyd_max.py": "881fc4324472e8944cc922d3d243d7a7068211276bde8959f7b3db49440a84a2",
+    "tests/test_quantization_comparison.py": "ebfef36522d3d43be9590dddad70f20248e2e0a98348234d4ad1e7cfa9d89241",
+    "tests/test_quantization_experiment.py": "4501659fba4142bd659c7890e1c5ff5736e9b0e4e45287d5340bf10f32c66e56",
+    "tests/test_qwen.py": "1a4799aaee4cb78576394a3827969e0d04fb9dc6644437503709944bea99ecab",
+    "tests/test_scales.py": "11a81c6e085b5d2a36db70f9d0c2990b25ce0bd8f8e9b63342c5468f7441b6a3",
+    "tests/test_weight.py": "d7bd2f8f97c5a1b947bc71279770f0fde0ab86c18f3a53bb7cfe20bcf147c896",
+    "uv.lock": "3bd3068d3476243fe1159bdd6ee7c847347442c071068e76da9a230d2385c444"
+  },
+  "model_path": "models/Qwen3-0.6B-Base",
+  "payload_dir": "results/historical_rerun/20261013/quantization_comparison",
+  "output_dir": "results/layerwise_diagnostics/20261014",
+  "python_version": "3.14.4",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.43",
+  "work_budget": {
+    "max_preparations_per_recipe": 1,
+    "teacher_token_blocks": 10,
+    "diagnostic_tokens": 4096,
+    "calibration_tokens": 512,
+    "wall_time_limit": null,
+    "memory_limit": null,
+    "gpu_count": 0
+  },
+  "software_versions": {
+    "torch": "2.14.0+cpu",
+    "numpy": "2.5.2",
+    "transformers": "4.57.6",
+    "datasets": "4.8.5",
+    "pytest": "8.4.2",
+    "matplotlib": "3.11.2"
+  },
+  "model_fingerprint": "d233a01a10d6dabc728c8bbc6c7264d6ecf223389dfaff023ba5ccb93f9b2cb8",
+  "tokenizer_fingerprint": "3fefda09ddf2c1c12a32bbb655147b38cbccfbe79fb6bc15dd1e366e00a35fd2",
+  "preflight": [
+    {
+      "check": "dependencies",
+      "status": "PASS",
+      "details": "Locked CPU runtime and plotting dependencies available"
+    },
+    {
+      "check": "historical_records",
+      "status": "PASS",
+      "details": "Five historical rows and paired quantization metadata verified"
+    },
+    {
+      "check": "checkpoint",
+      "status": "PASS",
+      "details": {
+        "path": "models/Qwen3-0.6B-Base",
+        "expected_model": "d233a01a10d6dabc728c8bbc6c7264d6ecf223389dfaff023ba5ccb93f9b2cb8",
+        "actual_model": "d233a01a10d6dabc728c8bbc6c7264d6ecf223389dfaff023ba5ccb93f9b2cb8",
+        "expected_tokenizer": "3fefda09ddf2c1c12a32bbb655147b38cbccfbe79fb6bc15dd1e366e00a35fd2",
+        "actual_tokenizer": "3fefda09ddf2c1c12a32bbb655147b38cbccfbe79fb6bc15dd1e366e00a35fd2"
+      }
+    },
+    {
+      "check": "payload:plain_lloyd_max",
+      "status": "PASS",
+      "details": {
+        "path": "results/historical_rerun/20261013/quantization_comparison/plain_lloyd_max.pt",
+        "expected_fingerprint": "b51d1413b50282f1062fe02645caacb6893a3d37d34d8daeca582ba173453de9",
+        "actual_fingerprint": "b51d1413b50282f1062fe02645caacb6893a3d37d34d8daeca582ba173453de9"
+      }
+    },
+    {
+      "check": "payload:h64_gptq_refit",
+      "status": "PASS",
+      "details": {
+        "path": "results/historical_rerun/20261013/quantization_comparison/h64_gptq_refit.pt",
+        "expected_fingerprint": "93da19247272e6ce0b6a7f0fd17c9c49b6f8462c34b3ddd8b3de842d8c68f043",
+        "actual_fingerprint": "93da19247272e6ce0b6a7f0fd17c9c49b6f8462c34b3ddd8b3de842d8c68f043"
+      }
+    },
+    {
+      "check": "diagnostic_data",
+      "status": "PASS",
+      "details": {
+        "dataset": "Salesforce/wikitext",
+        "dataset_config": "wikitext-2-raw-v1",
+        "split": "validation",
+        "token_start": 0,
+        "token_end": 4096,
+        "num_tokens": 4096,
+        "token_hash": "d32ab85f16c6a7e71057fed45d9e23e9b9ec3a61df06f3ba2edd176da4ce3595",
+        "smoke_token_hash": "3c925f90dd5d1ed08140e68f84099087aba83efc149c60f2fa970b5a23096593"
+      }
+    },
+    {
+      "check": "execution_configuration",
+      "status": "PASS",
+      "details": {
+        "device": "cpu",
+        "seed": 42,
+        "preparation_threads": 4,
+        "diagnostic_threads": 20,
+        "use_cache": false,
+        "diagnostic_source": "validation"
+      }
+    }
+  ],
+  "execution": {
+    "cpu_threads": 20,
+    "mkldnn_enabled": true,
+    "mkl_available": true,
+    "cpu_capability": "AVX2",
+    "float32_matmul_precision": "highest",
+    "device": "cpu",
+    "seed": 42,
+    "use_cache": false
+  },
+  "verified_payloads": {
+    "plain_lloyd_max": {
+      "path": "results/historical_rerun/20261013/quantization_comparison/plain_lloyd_max.pt",
+      "expected_fingerprint": "b51d1413b50282f1062fe02645caacb6893a3d37d34d8daeca582ba173453de9",
+      "actual_fingerprint": "b51d1413b50282f1062fe02645caacb6893a3d37d34d8daeca582ba173453de9"
+    },
+    "h64_gptq_refit": {
+      "path": "results/historical_rerun/20261013/quantization_comparison/h64_gptq_refit.pt",
+      "expected_fingerprint": "93da19247272e6ce0b6a7f0fd17c9c49b6f8462c34b3ddd8b3de842d8c68f043",
+      "actual_fingerprint": "93da19247272e6ce0b6a7f0fd17c9c49b6f8462c34b3ddd8b3de842d8c68f043"
+    }
+  },
+  "recipe_metadata": {
+    "plain_lloyd_max": {
+      "model_fingerprint": "d233a01a10d6dabc728c8bbc6c7264d6ecf223389dfaff023ba5ccb93f9b2cb8",
+      "tokenizer_fingerprint": "3fefda09ddf2c1c12a32bbb655147b38cbccfbe79fb6bc15dd1e366e00a35fd2",
+      "weight_method": "plain_lloyd_max",
+      "format": {
+        "tile": [
+          8,
+          64
+        ],
+        "lut": "e4m3",
+        "scale": "fp32_max_abs_div448_k64",
+        "activation": "existing_fp32_scale_e4m3_k64",
+        "compute": "fp32_output_input_dtype"
+      },
+      "config": {
+        "version": 1,
+        "hadamard_seed": 20260813,
+        "lm_max_iters": 50,
+        "gptq_damp": 0.01,
+        "refit_damp": 0.0001,
+        "refit_iters": 3,
+        "refit_tolerance": 1e-05,
+        "refit_alphas": [
+          1.0,
+          0.5,
+          0.25
+        ],
+        "source_commit": "658d6539153530fd63a7bd8017bec619f6604539"
+      },
+      "calibration": null
+    },
+    "h64_gptq_refit": {
+      "model_fingerprint": "d233a01a10d6dabc728c8bbc6c7264d6ecf223389dfaff023ba5ccb93f9b2cb8",
+      "tokenizer_fingerprint": "3fefda09ddf2c1c12a32bbb655147b38cbccfbe79fb6bc15dd1e366e00a35fd2",
+      "weight_method": "h64_gptq_refit",
+      "format": {
+        "tile": [
+          8,
+          64
+        ],
+        "lut": "e4m3",
+        "scale": "fp32_max_abs_div448_k64",
+        "activation": "existing_fp32_scale_e4m3_k64",
+        "compute": "fp32_output_input_dtype"
+      },
+      "config": {
+        "version": 1,
+        "hadamard_seed": 20260813,
+        "lm_max_iters": 50,
+        "gptq_damp": 0.01,
+        "refit_damp": 0.0001,
+        "refit_iters": 3,
+        "refit_tolerance": 1e-05,
+        "refit_alphas": [
+          1.0,
+          0.5,
+          0.25
+        ],
+        "source_commit": "658d6539153530fd63a7bd8017bec619f6604539"
+      },
+      "calibration": {
+        "dataset": "Salesforce/wikitext",
+        "config": "wikitext-2-raw-v1",
+        "split": "train",
+        "tokens": 512,
+        "token_hash": "7a699eca3df7d1340790642291e8c944a57386331df2f6e4e388da80ced8a4ab",
+        "source": "unquantized_bf16_inputs_fp32_rotation"
+      }
+    }
+  },
+  "diagnostic_tokens": {
+    "dataset": "Salesforce/wikitext",
+    "dataset_config": "wikitext-2-raw-v1",
+    "split": "validation",
+    "token_start": 0,
+    "token_end": 4096,
+    "num_tokens": 4096,
+    "token_hash": "d32ab85f16c6a7e71057fed45d9e23e9b9ec3a61df06f3ba2edd176da4ce3595",
+    "smoke_token_hash": "3c925f90dd5d1ed08140e68f84099087aba83efc149c60f2fa970b5a23096593"
+  },
+  "active_stage": "full",
+  "stages": {
+    "smoke": {
+      "num_tokens": 1024,
+      "num_token_blocks": 1,
+      "row_counts": {
+        "layer_errors.csv": 392,
+        "projection_summary.csv": 14,
+        "precision_controls.csv": 392,
+        "block_stats.csv": 392
+      },
+      "output_statistics_recomputed": true,
+      "weight_errors_independently_recomputed": true,
+      "precision_controls_deduplicated": true
+    },
+    "full": {
+      "num_tokens": 4096,
+      "num_token_blocks": 4,
+      "row_counts": {
+        "layer_errors.csv": 392,
+        "projection_summary.csv": 14,
+        "precision_controls.csv": 392,
+        "block_stats.csv": 1568
+      },
+      "output_statistics_recomputed": true,
+      "weight_errors_independently_recomputed": true,
+      "precision_controls_deduplicated": true
+    }
+  }
+}
