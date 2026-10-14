@@ -21,7 +21,7 @@ from datasets import load_dataset
 import transformers
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from src.experiment import (METHODS, FORMAT, CONFIG, files_hash, tensor_hash,
+from src.experiment import (METHODS, FORMAT, CONFIG, GPTQ_METHODS, recipe_config, files_hash, tensor_hash,
     calibration_metadata, build_payload, apply_payload)
 
 
@@ -99,17 +99,17 @@ def main() -> None:
         raise ValueError("Local safetensors model missing")
     model_fingerprint = files_hash(model_files)
     tokenizer_fingerprint = files_hash(list(model_root.glob("tokenizer*")) + list(model_root.glob("vocab*")) + list(model_root.glob("merges*")) + list(model_root.glob("special_tokens*")))
-    tokens = _load_tokens(args, tokenizer)
+    tokens = None if args.prepare_only else _load_tokens(args, tokenizer)
     calibration = None
     calibration_ids = None
-    if args.mode != "bf16" and args.weight_method == METHODS[1]:
+    if args.mode != "bf16" and args.weight_method in GPTQ_METHODS:
         if args.split != "test" or args.dataset != "Salesforce/wikitext" or args.dataset_config != "wikitext-2-raw-v1":
             raise ValueError("Optimized comparison requires WikiText-2 test evaluation and train calibration")
         dataset = load_dataset(args.dataset, args.dataset_config, split=args.calibration_split)
         calibration_ids = torch.tensor(tokenizer("\n\n".join(dataset["text"]), add_special_tokens=False)["input_ids"][:512], dtype=torch.long)
         calibration = calibration_metadata(calibration_ids, split=args.calibration_split)
     metadata = {'model_fingerprint': model_fingerprint, 'tokenizer_fingerprint': tokenizer_fingerprint,
-                'weight_method': args.weight_method, 'format': FORMAT, 'config': CONFIG,
+                'weight_method': args.weight_method, 'format': FORMAT, 'config': recipe_config(args.weight_method),
                 'calibration': calibration}
     payload_fingerprint = None
     if args.mode != "bf16":
@@ -157,14 +157,14 @@ def main() -> None:
     ppl = math.exp(mean_nll) if math.isfinite(mean_nll) else float("nan")
     result = {
         "spec_version": "reference-v1",
-        "experiment_version": "quantization-comparison-v1",
+        "experiment_version": "quantization-comparison-v1" if args.weight_method in METHODS[:2] else "ablation-comparison-v1",
         "weight_method": args.weight_method if args.mode != "bf16" else "none",
         "model_fingerprint": model_fingerprint,
         "tokenizer_fingerprint": tokenizer_fingerprint,
         "eval_token_hash": tensor_hash(tokens),
         "payload_fingerprint": payload_fingerprint,
         "quantization_format": FORMAT,
-        "recipe_config": CONFIG,
+        "recipe_config": recipe_config(args.weight_method),
         "calibration": calibration,
         "full_model_smoke": "PASS",
         "cpu_threads": torch.get_num_threads(),

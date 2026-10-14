@@ -1,0 +1,12 @@
+{
+  "python_version": "3.14.4",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.43",
+  "torch_version": "2.14.0+cpu",
+  "cpu_capability": "AVX2",
+  "mkldnn_enabled": true,
+  "mkl_available": true,
+  "float32_matmul_precision": "highest",
+  "cpu_threads": 20,
+  "scope": "same locked environment; run settings configured by scripts/diagnose_layers.py",
+  "dependency_lock_sha256": "3bd3068d3476243fe1159bdd6ee7c847347442c071068e76da9a230d2385c444"
+}

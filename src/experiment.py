@@ -11,13 +11,24 @@ from .linear import CachedLUTLinear
 from .qwen import _ELIGIBLE_LINEAR_NAMES
 from .weight import LUTWeight, quantize_weight
 
-METHODS = ('plain_lloyd_max', 'h64_gptq_refit')
+METHODS = ('plain_lloyd_max', 'h64_gptq_refit', 'h64_lloyd_max', 'h64_gptq')
+HADAMARD_METHODS = frozenset(METHODS[1:])
+GPTQ_METHODS = frozenset(('h64_gptq_refit', 'h64_gptq'))
 FORMAT = {'tile': [8, 64], 'lut': 'e4m3', 'scale': 'fp32_max_abs_div448_k64',
           'activation': 'existing_fp32_scale_e4m3_k64', 'compute': 'fp32_output_input_dtype'}
 CONFIG = {'version': 1, 'hadamard_seed': 20260813, 'lm_max_iters': 50,
           'gptq_damp': .01, 'refit_damp': 1e-4, 'refit_iters': 3,
           'refit_tolerance': 1e-5, 'refit_alphas': [1., .5, .25],
           'source_commit': '658d6539153530fd63a7bd8017bec619f6604539'}
+
+
+def recipe_config(method):
+    if method not in METHODS:
+        raise ValueError('Unknown weight method')
+    if method in METHODS[:2]:
+        return CONFIG
+    return {**CONFIG, 'ablation_version': 1, 'gptq_enabled': method == 'h64_gptq',
+            'refit_enabled': False, 'refit_iters': 0}
 
 
 def tensor_hash(tensor):
@@ -97,10 +108,11 @@ def payload_hash(payload):
 
 
 def validate_metadata(metadata):
-    if metadata.get('weight_method') not in METHODS or metadata.get('format') != FORMAT or metadata.get('config') != CONFIG:
+    method = metadata.get('weight_method')
+    if method not in METHODS or metadata.get('format') != FORMAT or metadata.get('config') != recipe_config(method):
         raise ValueError('Unknown or incompatible quantization configuration')
-    if metadata['weight_method'] == METHODS[0] and metadata.get('calibration') is not None:
-        raise ValueError('Plain quantization does not use calibration')
+    if method not in GPTQ_METHODS and metadata.get('calibration') is not None:
+        raise ValueError('Lloyd-Max quantization does not use calibration')
 
 
 def build_payload(model, metadata, tokens=None):
@@ -108,10 +120,14 @@ def build_payload(model, metadata, tokens=None):
     method = metadata['weight_method']
     if method not in METHODS:
         raise ValueError('Unknown weight method')
-    if method == METHODS[1]:
+    if method in GPTQ_METHODS:
         if tokens is None or metadata['calibration'] != calibration_metadata(tokens):
             raise ValueError('Calibration metadata mismatch')
         hessians, signs = collect_hessians(model, tokens)
+    elif method in HADAMARD_METHODS:
+        hessians = {}
+        signs = {name: make_signs(module.in_features, alias_for(name))
+                 for name, module in eligible(model).items()}
     else:
         hessians, signs = {}, {}
     layers, traces = {}, {}
@@ -121,9 +137,12 @@ def build_payload(model, metadata, tokens=None):
     with torch.inference_mode():
         for index, (name, module) in enumerate(modules.items()):
             weight = module.weight.detach().float()
-            if method == METHODS[1]:
-                qweight, trace = quantize_gptq(rotate(weight, signs[name]), hessians[name])
+            if method in GPTQ_METHODS:
+                qweight, trace = quantize_gptq(rotate(weight, signs[name]), hessians[name],
+                                             refit_iterations=recipe_config(method)['refit_iters'])
                 traces[name] = trace
+            elif method in HADAMARD_METHODS:
+                qweight = quantize_weight(rotate(weight, signs[name]))
             else:
                 qweight = quantize_weight(weight)
             layers[name] = {**asdict(qweight), 'signs': signs.get(name)}
@@ -153,7 +172,7 @@ def validate_payload(payload, metadata, model):
         from .e4m3 import quantize_e4m3
         if not torch.isfinite(lut).all() or not torch.equal(lut, quantize_e4m3(lut)) or not torch.isfinite(scale).all() or not torch.all(scale > 0):
             raise ValueError('Invalid payload LUT/scale values')
-        expected = make_signs(k, alias_for(name)) if metadata['weight_method'] == METHODS[1] else None
+        expected = make_signs(k, alias_for(name)) if metadata['weight_method'] in HADAMARD_METHODS else None
         actual = entry['signs']
         if (expected is None) != (actual is None) or (expected is not None and not torch.equal(expected, actual)):
             raise ValueError('Invalid payload signs')

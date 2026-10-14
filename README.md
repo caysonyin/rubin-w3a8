@@ -16,7 +16,7 @@ experiment; the [recipe comparison](docs/quantization_comparison.md) and
 experiments. See the [acceptance record](docs/acceptance.md) for their separate
 evidence and scope.
 
-The latest accepted execution completed on 2026-10-14: all eight historical
+The accepted Plan A execution completed on 2026-10-14: all eight historical
 evaluations reproduced exactly, 91 tests passed without skips, and Plan A
 passed its 1,024-token smoke and 4,096-token validation runs.
 
@@ -240,3 +240,81 @@ sensitivity or attribute effects to individual recipe steps.
 *Plan A Figure A2. B1 − B0 relative output error on validation inputs.
 Negative values indicate lower error. Raw deltas and the fixed numerical
 classification threshold are retained in the CSV tables.*
+
+## Plan B quantization ablation
+
+Plan B compares four fixed recipes in the order B0 → A1 → A2 → B1:
+
+| ID | Recipe | Calibration |
+|---|---|---|
+| B0 | Plain Lloyd-Max | None |
+| A1 | H64 + Lloyd-Max | None |
+| A2 | H64 + GPTQ, with zero LUT-refit rounds | First 512 train tokens |
+| B1 | Historical H64 + GPTQ + LUT Refitting | First 512 train tokens |
+
+The [frozen protocol](docs/ablation_protocol.md) preserves the model, data
+splits, numerical format, scales, seeds, and thread counts. A1/A2 share
+identical initial LUTs, and all three rotated recipes share identical signs
+and scales. A2 matches B1's initial GPTQ sweep. The
+[research report](docs/ablation_report.md) separates measured conditional
+increments, mechanism interpretations, and untested improvement hypotheses.
+
+The accepted [2026-10-14 execution](results/ablation/20261014/manifest.json)
+passed 108 tests, its smoke/full diagnostic checks, and all eight full Test
+evaluations. B0/B1 NLL/PPL deltas from history are exactly zero.
+
+| Recipe | W3A16 PPL | W3A8 PPL |
+|---|---:|---:|
+| B0 Plain Lloyd-Max | 28.917349 | 29.066560 |
+| A1 H64 + Lloyd-Max | 41.643547 | 42.430887 |
+| A2 H64 + GPTQ | 21.983180 | 22.338614 |
+| B1 H64 + GPTQ + LUT Refitting | 21.857657 | 22.224528 |
+
+H64 alone worsens accuracy in this fixed format. GPTQ given H64 lowers W3A8
+PPL by 47.352942% from A1; Refitting adds a 0.510712% reduction from A2.
+These conditional results do not establish the effect of GPTQ without H64.
+The largest pooled `o_proj` deterioration occurs at GPTQ given H64, while
+larger A8 input/output perturbations already appear at H64 alone.
+
+![Plan B full-model Test ablation](results/ablation/20261014/figure_b1_test_ablation.png)
+
+*Plan B Figure B1. Four-recipe Test PPL and fixed-order conditional Mean NLL changes.*
+
+Record engineering checks in a separate directory, then run the full study:
+
+```bash
+uv sync --locked --extra plots
+uv run --extra plots python -m scripts.check_layerwise_implementation \
+  --output-dir results/ablation/implementation
+HF_DATASETS_CACHE=models/wiki-cache uv run --extra plots \
+  python -m scripts.run_ablation --output-dir results/ablation/run
+```
+
+The default inputs are the accepted historical payloads in
+`results/historical_rerun/20261013/quantization_comparison` and Plan A
+diagnostics in `results/layerwise_diagnostics/20261014`. Supply the exact
+local resources or explicitly set `--baseline-payload-dir`, `--plan-a-dir`,
+and `--model-path`. A fresh clone must rebuild the ignored payloads using the
+historical runner documented above. `--preflight-only` checks resources and
+identities without preparing weights or running a forward.
+
+Plan B reuses the historical BF16 score and accepted B0/B1 local statistics
+with explicit provenance; it freshly evaluates all eight quantized Test rows.
+A1/A2 local diagnostics use the same 1,024-token smoke and 4,096-token
+validation protocol. Both precision modes share each recipe's payload.
+Input perturbation statistics use existing validation hooks without another
+model forward. Preparation uses train resources without loading Test data.
+
+Each accepted run records full-model summary and conditional-increment CSVs,
+four verified local diagnostic CSVs, input statistics, source/configuration
+manifests, logs, and three figures in PNG/PDF. Regenerate plots with:
+
+```bash
+uv run --extra plots python -m scripts.plot_ablation \
+  --input-dir results/ablation/run
+```
+
+The three sequential differences describe conditional effects in this fixed
+order; they do not establish independent component causality. Local output
+errors do not measure layer PPL sensitivity. No new model, quantization format,
+or hardware implementation is included.

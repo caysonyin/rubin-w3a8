@@ -219,3 +219,34 @@ The independent reduction tolerance is separately `atol=1e-12, rtol=1e-10`.
 Neither tolerance relaxes payload fingerprints, teacher hashes, or repeated
 control identity. The fixed CSV schemas and acceptance requirements are in
 Plan A; [measured results](layerwise_diagnostics.md) are recorded separately.
+
+## Plan B ablation extension
+
+The [Plan B protocol](ablation_protocol.md) extends the existing experiment
+with `h64_lloyd_max` and `h64_gptq`. It preserves `reference-v1` scales,
+tiles, LUT values, activation quantization, FP32 accumulation, and BF16 output
+casts. Historical plain/B1 metadata and configuration remain identical.
+The two added recipes have explicit ablation metadata and cannot substitute
+for a historical payload.
+
+`h64_lloyd_max` rotates weights with the existing signs and fits the existing
+Lloyd-Max quantizer without calibration. `h64_gptq` uses those identical
+initial LUTs/scales and the existing train Hessians, damping, dead-channel
+rules, and first sequential GPTQ sweep. It disables LUT refitting with zero
+refit rounds and preserves the sweep indices directly. B1 still performs its
+original three-round refitting procedure with its original acceptance rule.
+
+The diagnostic reducer accepts the four recipes only through an explicit
+method list and the separate `ablation-diagnostics-csv-v1` version.
+Default Plan A callers retain the original two-recipe validation and schema.
+New FP32/H64 control observations must agree exactly across four/three
+recipes respectively. Sequential conditional comparisons use the existing
+numerical threshold and preserve raw differences.
+
+Input perturbation SSE is measured in the original and rotated bases within
+the existing validation hooks. It precedes multiplication by reconstructed
+weights, whereas output activation increment includes that multiplication
+and final BF16 rounding. The two measurements answer different questions;
+neither alone supplies layer PPL sensitivity. The
+[Plan B report](ablation_report.md) records the actual experiment results and
+the distinction between observations and mechanism hypotheses.

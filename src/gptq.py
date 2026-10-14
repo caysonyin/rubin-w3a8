@@ -78,7 +78,9 @@ def refit(original, indices, centers, scales, hessian, valid_rows, chunk_size=12
     return result.reshape(nt, kt, 8)
 
 
-def quantize_gptq(weight: torch.Tensor, hessian: torch.Tensor) -> tuple[LUTWeight, dict]:
+def quantize_gptq(weight: torch.Tensor, hessian: torch.Tensor, *, refit_iterations: int = 3) -> tuple[LUTWeight, dict]:
+    if type(refit_iterations) is not int or refit_iterations not in (0, 3):
+        raise ValueError("Frozen GPTQ supports zero or three refit rounds")
     if weight.ndim != 2 or min(weight.shape) <= 0 or weight.shape[1] % 64:
         raise ValueError("GPTQ requires [N,K] with K divisible by 64")
     ktiles = weight.shape[1] // 64
@@ -101,7 +103,7 @@ def quantize_gptq(weight: torch.Tensor, hessian: torch.Tensor) -> tuple[LUTWeigh
     current = objective(tiles, quantized, hessian, valid)
     signal = max(objective(tiles, torch.zeros_like(tiles), hessian, valid), 1e-30)
     trace = [current / signal]
-    for _ in range(3):
+    for _ in range(refit_iterations):
         proposal = refit(tiles, indices, centers, scales, hessian, valid)
         best = (current, centers, quantized, indices)
         for alpha in (1., .5, .25):
