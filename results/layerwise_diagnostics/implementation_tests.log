@@ -1,0 +1,10 @@
+........................................................................ [ 79%]
+...................                                                      [100%]
+=============================== warnings summary ===============================
+tests/test_baseline_regressions.py::test_different_magnitudes_and_noncontiguous_input[dtype0]
+  /home/caysonyin/Projects/rubin-w3a8/src/e4m3.py:54: UserWarning: torch.searchsorted(): input value tensor is non-contiguous, this will lower the performance due to extra data copy when converting non-contiguous tensor to contiguous, please use contiguous input value tensor if possible. This message will only appear once per program. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/native/BucketizationUtils.h:32.)
+    positions = torch.searchsorted(values, magnitude, right=False)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+---- generated xml file: /tmp/rubin-implementation-tests-ngiobt8q/tests.xml ----
+91 passed, 1 warning in 5.05s

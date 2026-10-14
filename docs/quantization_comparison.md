@@ -168,7 +168,7 @@ The A8-minus-A16 NLL increment is 0.005146626969 for plain and 0.016645258123 fo
 
 All 196 optimized layers have finite, strictly decreasing accepted proxy traces. Accepted refit rounds: 194 layers accepted three, one accepted two, and one accepted none. This proxy check is separate from the held-out PPL result.
 
-## Acceptance
+## Original comparison acceptance
 
 | Check | Result | Evidence |
 |---|---|---|
@@ -182,3 +182,36 @@ All 196 optimized layers have finite, strictly decreasing accepted proxy traces.
 Artifact-level and engineering acceptance: PASS for this CPU adaptation and the frozen two-recipe comparison. No test-based hyperparameter tuning was performed. The observed thread sensitivity is resolved by the documented 20-thread evaluation setting; reproducibility claims concern this recorded CPU/runtime setup.
 
 All evidence paths above are relative to `results/quantization_comparison/`. The source manifest identifies the modified working-tree code in addition to the base Git commit recorded by the evaluator. Diagnostic runs are separated from the five final rows; expected rejection traces in `run.log` precede the final successful resumed run.
+
+## Complete historical rerun and Plan A
+
+The latest accepted execution completed on 2026-10-14. It reran the three
+original reference rows and every row of this five-row comparison in full,
+using 20 evaluation threads, 32,768 test tokens, and 32,736 predicted tokens.
+All eight mean-NLL and PPL deltas were exactly zero. Both recipes were rebuilt
+with four preparation threads and their payload fingerprints matched the
+historical values exactly:
+
+| Recipe | Accepted payload fingerprint |
+|---|---|
+| plain_lloyd_max | `b51d1413b50282f1062fe02645caacb6893a3d37d34d8daeca582ba173453de9` |
+| h64_gptq_refit | `93da19247272e6ce0b6a7f0fd17c9c49b6f8462c34b3ddd8b3de842d8c68f043` |
+
+The [rerun report](../results/historical_rerun/20261013/report.md),
+[manifest](../results/historical_rerun/20261013/manifest.json), and
+[resource provenance](../results/historical_rerun/resource_provenance.json)
+record the results and fixed inputs. The original result artifacts remain the
+historical comparison source. The current
+[engineering acceptance](../results/layerwise_diagnostics/implementation_acceptance.json)
+records 91 tests passed without skips.
+
+The subsequent [Plan A experiment](update_plan_a.md) uses these exact payloads
+and separate validation inputs for local output diagnostics. All four
+acceptance states passed. In both A16 and A8, B1 improves relative output error
+in 170/196 layers and worsens it in 26, while relative weight reconstruction
+error and activation increment MSE increase in every matched layer.
+The [diagnostic report](layerwise_diagnostics.md) includes the projection
+breakdown, signed A8 Teacher MSE changes, controls, and independent
+verification sources. These local measurements complement the test-PPL
+comparison; they do not supply per-layer PPL sensitivity or per-step mechanism
+attribution.

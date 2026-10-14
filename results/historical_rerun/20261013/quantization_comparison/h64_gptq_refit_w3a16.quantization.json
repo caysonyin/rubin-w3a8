@@ -1,0 +1,1999 @@
+{
+  "metadata": {
+    "model_fingerprint": "d233a01a10d6dabc728c8bbc6c7264d6ecf223389dfaff023ba5ccb93f9b2cb8",
+    "tokenizer_fingerprint": "3fefda09ddf2c1c12a32bbb655147b38cbccfbe79fb6bc15dd1e366e00a35fd2",
+    "weight_method": "h64_gptq_refit",
+    "format": {
+      "tile": [
+        8,
+        64
+      ],
+      "lut": "e4m3",
+      "scale": "fp32_max_abs_div448_k64",
+      "activation": "existing_fp32_scale_e4m3_k64",
+      "compute": "fp32_output_input_dtype"
+    },
+    "config": {
+      "version": 1,
+      "hadamard_seed": 20260813,
+      "lm_max_iters": 50,
+      "gptq_damp": 0.01,
+      "refit_damp": 0.0001,
+      "refit_iters": 3,
+      "refit_tolerance": 1e-05,
+      "refit_alphas": [
+        1.0,
+        0.5,
+        0.25
+      ],
+      "source_commit": "658d6539153530fd63a7bd8017bec619f6604539"
+    },
+    "calibration": {
+      "dataset": "Salesforce/wikitext",
+      "config": "wikitext-2-raw-v1",
+      "split": "train",
+      "tokens": 512,
+      "token_hash": "7a699eca3df7d1340790642291e8c944a57386331df2f6e4e388da80ced8a4ab",
+      "source": "unquantized_bf16_inputs_fp32_rotation"
+    }
+  },
+  "payload_fingerprint": "93da19247272e6ce0b6a7f0fd17c9c49b6f8462c34b3ddd8b3de842d8c68f043",
+  "traces": {
+    "model.layers.0.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.0124536747350893,
+        0.011847726914065387,
+        0.011759689464574823,
+        0.011632344455871694
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.0.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.009618126044254759,
+        0.009106756382398518,
+        0.009081675330915135,
+        0.00906929577190446
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.0.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.02416323288197871,
+        0.023772149599469,
+        0.023528261469237397,
+        0.023438716483791915
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.0.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.022832551247911434,
+        0.02234056870426556,
+        0.022116984489049276,
+        0.021950620074887055
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.0.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.011235432195922494,
+        0.010984714275769534,
+        0.01085676975349791,
+        0.010781033792128917
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.0.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.025095757679506198,
+        0.024652899979969615,
+        0.024374215485018422,
+        0.024220930275321056
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.0.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.021376699851387845,
+        0.021054901604372074,
+        0.020864324160927254,
+        0.020766952239036525
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.1.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.01311758108226182,
+        0.01280156363622271,
+        0.01261120917393262,
+        0.012534226507142173
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.1.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.009822906584468756,
+        0.009563081953842235,
+        0.009452173179371137,
+        0.009383917205229818
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.1.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.025559476656002895,
+        0.02512507295879137,
+        0.024878696882975143,
+        0.024737071952491987
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.1.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.016146805314834232,
+        0.01588479493609735,
+        0.015745253698987428,
+        0.015642124844117235
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.1.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.00418435579163243,
+        0.004121864943166526,
+        0.00407272034681714,
+        0.004047977589797052
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.1.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.02400629945027052,
+        0.023578891719775976,
+        0.02334659926052687,
+        0.023227663693966977
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.1.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.020816411978696818,
+        0.02052325859293033,
+        0.020353377384380037,
+        0.02024759640371186
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.2.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.012891943891770882,
+        0.01259334044282473,
+        0.012425227801878994,
+        0.012361174172195101
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.2.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.009635514959854328,
+        0.009407768954047876,
+        0.009294754369953287,
+        0.009187915257668008
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.2.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.02520359220546364,
+        0.02477300383322414,
+        0.024523464591239504,
+        0.024416880269432333
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.2.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.014097749168933185,
+        0.013834731014807282,
+        0.013676865310779142,
+        0.013557020553736324
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.2.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.006401412642700458,
+        0.006212969513662545,
+        0.006139302964753939,
+        0.006090335732479667
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.2.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.025628286207033977,
+        0.025170613663706043,
+        0.024907215520223645,
+        0.024817078840943984
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.2.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.0005990995073269596
+      ],
+      "accepted_iterations": 0,
+      "dead_channels": 0
+    },
+    "model.layers.3.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.010717870677225938,
+        0.010422621708244135,
+        0.010297880658250894,
+        0.01020505716097106
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.3.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.013837602893460685,
+        0.01357430741207069,
+        0.013472127178968726,
+        0.013408941625745385
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.3.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.02571517208781044,
+        0.02531067439630989,
+        0.025060845380566254,
+        0.024928738389363436
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.3.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.009533365636628129,
+        0.009400423459077066,
+        0.009315440399555664,
+        0.009265749803449292
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.3.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.006581118528360873,
+        0.006465241480746859,
+        0.006406548726181352,
+        0.006369483671763598
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.3.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.023732011257598745,
+        0.02332607679141168,
+        0.02314031510668283,
+        0.02303249815008029
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.3.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.019038009347089317,
+        0.01880323415515101,
+        0.018671540256105262,
+        0.018580879358814733
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.4.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.010968167614685831,
+        0.01073693434781193,
+        0.010580423267737948,
+        0.010510982359726627
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.4.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.010689038518392346,
+        0.01047930730327927,
+        0.010323870373560081,
+        0.010253378398110111
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.4.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.02521104038327122,
+        0.02478227071681513,
+        0.024581561936165012,
+        0.024448772807919083
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.4.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.015594959025304368,
+        0.015332814862012187,
+        0.015204146058341748,
+        0.01511187938953791
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.4.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.007592939686205246,
+        0.007453327112313257,
+        0.007382613364938852,
+        0.007327003909202191
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.4.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.02368589420896697,
+        0.023293746331745743,
+        0.023087339513490412,
+        0.022964704927911472
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.4.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.018769877682255576,
+        0.018507184473535877,
+        0.018359138725087508,
+        0.018286319571728986
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.5.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.011203313978618745,
+        0.010905470971692201,
+        0.010821986709016802,
+        0.010755870168561988
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.5.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.011349672633390831,
+        0.011119314811664933,
+        0.01093068308033725,
+        0.010813576759832902
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.5.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.024974291380238798,
+        0.02452622471330629,
+        0.024251842974639493,
+        0.024060955966663626
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.5.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.015100493928804299,
+        0.014776406128635084,
+        0.014638465068682526,
+        0.014520672587793541
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.5.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.0116211131195814,
+        0.011369491898389487,
+        0.01125787656577736,
+        0.011187319637269297
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.5.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.024193463743365624,
+        0.023768023189673734,
+        0.02351864794505335,
+        0.023403858349054497
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.5.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.023026408902036978,
+        0.022672901367619465,
+        0.022474047375645238,
+        0.022353103530381124
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.6.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.009824032723279945,
+        0.009494531692424826,
+        0.00934705103762174,
+        0.009256073807345007
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.6.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.012081086216306892,
+        0.011893808744830241,
+        0.011763359455135413,
+        0.011689994246494284
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.6.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.025668364441128688,
+        0.02524243186172479,
+        0.025074323878004665,
+        0.024922736445554466
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.6.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.013502905966124794,
+        0.01319485827629146,
+        0.013057590224036837,
+        0.012951595504519764
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.6.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.00939525817387568,
+        0.009186952013602659,
+        0.009094018503802212,
+        0.009030044025617008
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.6.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.024169375937630157,
+        0.023783109861804073,
+        0.023523721718012838,
+        0.02339125663670294
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.6.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.020853219345936817,
+        0.020552280906338812,
+        0.020407183805964003,
+        0.020280186838420033
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.7.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.010582111970611026,
+        0.01037206828908495,
+        0.010259518264385188,
+        0.010206657483692205
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.7.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.011032341415424592,
+        0.010810863708203881,
+        0.010646458965815495,
+        0.010619873824924693
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.7.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.025747000221448327,
+        0.025376208709407603,
+        0.02515256529199443,
+        0.025060155574503258
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.7.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.015833845235046298,
+        0.015570347801649204,
+        0.015415826754058223,
+        0.015337440524785273
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.7.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.008924546296475877,
+        0.008725616784706207,
+        0.00863121804698763,
+        0.008579570484406007
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.7.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.02319170427543999,
+        0.022790275634369184,
+        0.022546774728370945,
+        0.022396380195159375
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.7.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.02006318641720069,
+        0.019744230793448544,
+        0.01960232952555296,
+        0.01950787104577029
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.8.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.011901580805769394,
+        0.01163354521048215,
+        0.011455079300856923,
+        0.01140880491920972
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.8.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.014173188261243523,
+        0.013914464753677488,
+        0.013790111428609477,
+        0.013642438064787646
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.8.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.02347884671199909,
+        0.02312933247050838,
+        0.022889440844448272,
+        0.02274987686537503
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.8.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.014225132498338223,
+        0.01401184418359191,
+        0.013897653977001274,
+        0.013758245246351284
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.8.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.009382758624905977,
+        0.009184389251848212,
+        0.009071202040069377,
+        0.008997436832578668
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.8.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.022631129167714866,
+        0.022249021137375657,
+        0.022037105782428675,
+        0.021909461275884508
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.8.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.020306989104815824,
+        0.02002486670395418,
+        0.01985547757117272,
+        0.01973576797255842
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.9.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.009798026448104487,
+        0.00953937572246458,
+        0.009439128055950579,
+        0.009399993862001493
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.9.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.012185140502346,
+        0.011975498126194735,
+        0.01185704584705481,
+        0.01178557127454235
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.9.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.025322785648973806,
+        0.024936468349193084,
+        0.024670230527598345,
+        0.024588932436237297
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.9.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.014908139537691803,
+        0.014429711231836447,
+        0.014221787347173167,
+        0.014022789412289235
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.9.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.008793439533690904,
+        0.008639137850779539,
+        0.008536729172418352,
+        0.008479175368086615
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.9.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.020173417380869817,
+        0.019876539764653783,
+        0.019725658440101632,
+        0.019615092575733593
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.9.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.0190361117086548,
+        0.018720128020199952,
+        0.018588637233334225,
+        0.018494874250053816
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.10.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.009705129040929565,
+        0.009541529068922904,
+        0.009387027726216673,
+        0.009309786980640975
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.10.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.011114333827834033,
+        0.01091114910931455,
+        0.010784795203171403,
+        0.01068157376651457
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.10.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.023784986481287514,
+        0.023379118090721948,
+        0.023096845797773338,
+        0.023091831376673554
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.10.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.012623175915916758,
+        0.012400203886015275,
+        0.012326635326996807,
+        0.01223674589649963
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.10.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.00961657577269311,
+        0.009367996230986716,
+        0.009268813276681503,
+        0.009186776923683419
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.10.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.017507856301535077,
+        0.01721780626623562,
+        0.017086323526325557,
+        0.017022824365609902
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.10.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.018734067204260074,
+        0.01826341309899141,
+        0.01804731604565985,
+        0.017899905342851977
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.11.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.007380997161176919,
+        0.007195626908757707,
+        0.0071031794692448585,
+        0.007065509466105044
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.11.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.010288232793642844,
+        0.010071578240012261,
+        0.010049024714842928,
+        0.010017143195171167
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.11.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.02265323252767551,
+        0.022307308686080513,
+        0.022134757260329097,
+        0.02197598411748611
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.11.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.017215705906771312,
+        0.01659803549220021,
+        0.01637544798335943,
+        0.01615640458107815
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.11.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.010168399144752227,
+        0.009956281784562841,
+        0.009834233760876806,
+        0.009742082417242342
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.11.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.019858872339893856,
+        0.019565881706502697,
+        0.019386908501023623,
+        0.0192719308227651
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.11.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.020789678236891308,
+        0.020473230143285594,
+        0.020303545569669488,
+        0.020174207770485047
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.12.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.010518656188880964,
+        0.00980394373067006,
+        0.009477745453657684,
+        0.009447531070316253
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.12.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.010736168339670464,
+        0.010539905493638764,
+        0.010456392570938867,
+        0.01030805187903789
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.12.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.021182778252359213,
+        0.020873087358660877,
+        0.02065559966237709,
+        0.02056158941483178
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.12.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.00942588473903234,
+        0.009286049782956239,
+        0.00922813030107154,
+        0.009186997710840585
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.12.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.01011177685533351,
+        0.00990972113869097,
+        0.009805943992785783,
+        0.009764128695833051
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.12.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.02074253925149186,
+        0.020400604496328714,
+        0.020223568736962058,
+        0.020108991249309396
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.12.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.022553412314842154,
+        0.022107889863915573,
+        0.021884587428798192,
+        0.021757580222504784
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.13.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.008657139531742214,
+        0.008432889368418163,
+        0.008377726047553337,
+        0.00830427421271088
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.13.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.009686009409029772,
+        0.00950965799485839,
+        0.009429197335728893,
+        0.009372327804802488
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.13.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.02092962062290479,
+        0.02062311643790765,
+        0.020486272284218714,
+        0.02038128807816984
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.13.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.010073352832981157,
+        0.009923836503114692,
+        0.009856019225862123,
+        0.009782624470056976
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.13.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.010934825075813115,
+        0.010710319953491051,
+        0.010594034060563444,
+        0.010535270703494297
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.13.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.021012441219795844,
+        0.020663627993507714,
+        0.02050082226196443,
+        0.020379956729293516
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.13.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.023531254241847183,
+        0.023152617413290666,
+        0.022928989893152743,
+        0.022785039918315406
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.14.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.009843864545958538,
+        0.009594466473619534,
+        0.009475122155998517,
+        0.009425274509999663
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.14.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.009483659614757224,
+        0.009323294412173543,
+        0.009237362598514815,
+        0.00916269369247155
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.14.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.02207234886394433,
+        0.021725057074510046,
+        0.021500059636616865,
+        0.021433654721254712
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.14.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.01473701392479591,
+        0.014409298318888738,
+        0.01432884943165912,
+        0.01421051089552458
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.14.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.01165624012104546,
+        0.011322749998569272,
+        0.011183067960929117,
+        0.01107984276227805
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.14.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.02060108040169765,
+        0.020226004491328817,
+        0.019930865148625722,
+        0.019835284228588625
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.14.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.02434611184486194,
+        0.023931202939373408,
+        0.0236799982121958,
+        0.023544889636046035
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.15.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.010013242961622024,
+        0.009647847714473697,
+        0.009518133105546615,
+        0.009437544474640892
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.15.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.010877299745073388,
+        0.010571198729235677,
+        0.010392163490233988,
+        0.010373857827022352
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.15.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.025625912848194723,
+        0.02522560474499846,
+        0.024984948746924945,
+        0.024837302732314145
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.15.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.012946311644555912,
+        0.012644775768155224,
+        0.012526547124411515,
+        0.012407942565201259
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.15.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.010689565056957008,
+        0.010407898962698267,
+        0.010255518349415441,
+        0.010191842960881325
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.15.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.019412420325124292,
+        0.019078021459429256,
+        0.018873600184174204,
+        0.01873682998295215
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.15.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.02315432627398842,
+        0.02278896430669612,
+        0.022547424169412886,
+        0.02241040433099825
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.16.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.009835273884698143,
+        0.009553469709465938,
+        0.00944841163230403,
+        0.00939579153702249
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.16.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.01047949122043451,
+        0.010300390144572959,
+        0.010195264467713318,
+        0.010168895802301814
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.16.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.023120222392721185,
+        0.02277778068429731,
+        0.02257356056578865,
+        0.02246934051552002
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.16.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.009816172489986024,
+        0.00966962774815474,
+        0.009615793820492775,
+        0.00955982654443095
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.16.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.009548909209017334,
+        0.009302385452203674,
+        0.009208073814726754,
+        0.009130860617682873
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.16.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.017264753753373694,
+        0.01689851101215266,
+        0.016747459979220686,
+        0.0166315034686147
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.16.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.02193141377079838,
+        0.02136654193083834,
+        0.02114503389691501,
+        0.020987130362377968
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.17.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.01008585376546541,
+        0.009834902503331149,
+        0.009757520395108672,
+        0.009638748274422074
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.17.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.010137873229241747,
+        0.009905080120429887,
+        0.009774622500388314,
+        0.009664483224154391
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.17.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.02588595323510037,
+        0.025317216699738597,
+        0.025212327744278534,
+        0.025071231225411116
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.17.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.00915879305790721,
+        0.008981414979141228,
+        0.008918857748546434,
+        0.008877271379807802
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.17.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.010247952817711974,
+        0.010007044050622152,
+        0.009887303884870881,
+        0.009837269225959516
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.17.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.01601722724358424,
+        0.015709501619970354,
+        0.015590220376270107,
+        0.015503694891904854
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.17.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.01923384499811904,
+        0.018965402517913347,
+        0.018797044538106406,
+        0.018720794784277718
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.18.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.010081006124220157,
+        0.009898334836818732,
+        0.00977105757166499,
+        0.00969353320877195
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.18.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.012040247836052653,
+        0.011742103329914565,
+        0.011625686602169805,
+        0.011616100709453818
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.18.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.02584340991116808,
+        0.025395821673612175,
+        0.025248827277899125,
+        0.0250957889272841
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.18.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.011435268091549015,
+        0.01125059299894905,
+        0.011139951346852268,
+        0.011065676691712942
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.18.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.010267769255603309,
+        0.009978981121802559,
+        0.009850388091731286,
+        0.009785250999257014
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.18.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.015068427252813156,
+        0.014800269155461959,
+        0.014682485807424326,
+        0.01457083509199382
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.18.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.019927126782386655,
+        0.019580761523689056,
+        0.019417938802143125,
+        0.019280802009575843
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.19.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.010777867845498994,
+        0.01047731763991821,
+        0.010358981137940967,
+        0.010233608772527823
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.19.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.01181390697073512,
+        0.011579681133438631,
+        0.011515753983747478,
+        0.011451377379582467
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.19.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.02625604760067135,
+        0.02584202549785947,
+        0.025628132343569088,
+        0.0255369014409637
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.19.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.012393048936290523,
+        0.012206216571185457,
+        0.012076786207691816,
+        0.012017534208784205
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.19.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.009513554281209735,
+        0.009276036377817456,
+        0.00918988159403625,
+        0.009136467744717033
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.19.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.014337307165128607,
+        0.014111168803581316,
+        0.013940366378740209,
+        0.013866902970206398
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.19.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.018573037100243876,
+        0.018238141026698237,
+        0.018044881788624102,
+        0.017940854802836165
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.20.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.011180875889775144,
+        0.010896841896686384,
+        0.01074396327176355,
+        0.010656953822050421
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.20.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.013799419250724193,
+        0.013596478848002268,
+        0.013476115116900696,
+        0.013437185887313078
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.20.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.025549404438518008,
+        0.025090861162547034,
+        0.024964953160266538,
+        0.024857157797674747
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.20.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.009497062039015744,
+        0.00920376784237125,
+        0.009099105065097948,
+        0.009013664076176146
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.20.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.010521555156651555,
+        0.010305899337156752,
+        0.010170149861553913,
+        0.010067148911496047
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.20.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.015239295874962734,
+        0.015026825344057743,
+        0.014887359868579168,
+        0.01480469271988462
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.20.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.01573496235823227,
+        0.015447220816203469,
+        0.015296381912974756,
+        0.015184976547390233
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.21.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.013007922299704109,
+        0.012677889833411844,
+        0.012539123311831794,
+        0.01243696847405237
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.21.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.014706025862719085,
+        0.014430539623963456,
+        0.014366642566526212,
+        0.014219644378318609
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.21.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.024421716088442562,
+        0.024019218851876578,
+        0.023751235900437838,
+        0.02359907060959151
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.21.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.0070784728708073565,
+        0.0068862864346529535,
+        0.006823043399308231,
+        0.0067648018027883445
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.21.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.009920387654802942,
+        0.009698831812017836,
+        0.009629882650046167,
+        0.009589507542165365
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.21.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.016670759550800437,
+        0.016378901030770977,
+        0.01624755319336432,
+        0.01616797759802676
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.21.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.013496088484604743,
+        0.013276348866514047,
+        0.013165554016717417,
+        0.013038718413613174
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.22.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.012074524918019044,
+        0.011817010591761972,
+        0.011693003388648997,
+        0.011609215660888765
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.22.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.013872897246185257,
+        0.013616462517343384,
+        0.013457689245337781,
+        0.013340976248633476
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.22.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.023722258307770007,
+        0.02341243407052117,
+        0.023212127198327694,
+        0.023056669936622844
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.22.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.008443738394673923,
+        0.008281061163725064,
+        0.008198337784962647,
+        0.00816276938261829
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.22.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.009993533779875509,
+        0.00982293256661098,
+        0.009746187909829828,
+        0.009682910182693957
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.22.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.017630686338150167,
+        0.01738359607351038,
+        0.017228130672330838,
+        0.017165864379932845
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.22.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.012320257324086203,
+        0.012115485368946497,
+        0.012066947114482533,
+        0.01204169567955169
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.23.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.009974022942073734,
+        0.009778971632365494,
+        0.009690535407563362,
+        0.00961044573999428
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.23.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.011988052864902263,
+        0.01183504905592503,
+        0.011748238185835702,
+        0.01171942551543453
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.23.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.023167652274630406,
+        0.022794590211910378,
+        0.022588504717580102,
+        0.022478752907805915
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.23.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.012861678098406973,
+        0.012682407838189797,
+        0.012605235463119957,
+        0.012541090228384696
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.23.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.010231704923604167,
+        0.010089927773101057,
+        0.009996897178598948,
+        0.009931253063241347
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.23.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.018341703436098557,
+        0.01807934166925795,
+        0.017942477426708556,
+        0.017845278264657826
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.23.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.008885972591501383,
+        0.008782657615316564,
+        0.008712137493133284,
+        0.008682874366365782
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.24.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.009854043300474733,
+        0.009642589355621962,
+        0.009510594190828585,
+        0.009484629528784904
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.24.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.012038669179115192,
+        0.011796490810366609,
+        0.011740132234460278,
+        0.01164411007413993
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.24.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.021758531835147987,
+        0.021404432604891045,
+        0.021258095134843318,
+        0.02113048682542387
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.24.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.008096822926387246,
+        0.007960438662079185,
+        0.007872900984250681,
+        0.007783277730898996
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.24.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.012312612764322259,
+        0.011866894880642527,
+        0.011626393041293193,
+        0.011469954762523778
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.24.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.019618697790246747,
+        0.019194844433232588,
+        0.019058239992375253,
+        0.018928352768039
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.24.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.011147274874029273,
+        0.011000884463199112,
+        0.01090042298182765,
+        0.01085933370261222
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.25.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.0101505819764616,
+        0.009918062129778422,
+        0.00975183704746103,
+        0.009698496502789023
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.25.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.011954596185044807,
+        0.01173463289675768,
+        0.011650776310093956,
+        0.011592418652390904
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.25.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.020527315174652522,
+        0.020197178536644492,
+        0.02001587460233749,
+        0.01984141878328031
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.25.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.008797319982821263,
+        0.008675541013438771,
+        0.008631233236019038,
+        0.008585205609401228
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.25.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.010877303014399103,
+        0.010683318545462258,
+        0.010593145604132543,
+        0.010547754954662224
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.25.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.01795365722367487,
+        0.0177118904403479,
+        0.0175577861031916,
+        0.0174549018504625
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.25.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.01280102620737273,
+        0.01268206277435414,
+        0.012612047956069928,
+        0.012520196741282809
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.26.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.014612319932970673,
+        0.014297136661348022,
+        0.013868040502237713,
+        0.013824167125894994
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.26.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.013519061057358119,
+        0.013269763600058474,
+        0.012889141128913862,
+        0.012851858200859479
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.26.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.0202722715467441,
+        0.01991543539027005,
+        0.01981559949845963,
+        0.01966696450624517
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.26.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.012921299076324146,
+        0.012440941859677935,
+        0.012285734797505214,
+        0.012113953650919808
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.26.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.00926372674237742,
+        0.009032426713735787,
+        0.008946216490831252,
+        0.008927684866151756
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.26.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.013627696845208809,
+        0.013527077287321087,
+        0.013369734727443476,
+        0.013294860101845093
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.26.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.011652382740387822,
+        0.011423143621815004,
+        0.011299484008146348,
+        0.011260177834691765
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.27.self_attn.q_proj": {
+      "proxy_objective_trace": [
+        0.008567612225885072,
+        0.00841659569376853,
+        0.008344696668852215,
+        0.008286133111469644
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.27.self_attn.k_proj": {
+      "proxy_objective_trace": [
+        0.006335947846405301,
+        0.006263055674136984,
+        0.0061959022247000325,
+        0.006164870659579691
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.27.self_attn.v_proj": {
+      "proxy_objective_trace": [
+        0.020562127891529506,
+        0.020365555654932203,
+        0.020236053662583898,
+        0.02014396899241403
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.27.self_attn.o_proj": {
+      "proxy_objective_trace": [
+        0.011016470693831923,
+        0.010874611101892565,
+        0.010782825944553764,
+        0.010734353984623071
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.27.mlp.gate_proj": {
+      "proxy_objective_trace": [
+        0.005743220619413111,
+        0.005308332707799937,
+        0.005286807504336584,
+        0.005190161679674101
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    },
+    "model.layers.27.mlp.up_proj": {
+      "proxy_objective_trace": [
+        0.01279011724171768,
+        0.012643303308586953,
+        0.012578771205090607
+      ],
+      "accepted_iterations": 2,
+      "dead_channels": 0
+    },
+    "model.layers.27.mlp.down_proj": {
+      "proxy_objective_trace": [
+        0.004378996358851781,
+        0.004209489442072625,
+        0.004169661225600165,
+        0.00412895200632548
+      ],
+      "accepted_iterations": 3,
+      "dead_channels": 0
+    }
+  }
+}

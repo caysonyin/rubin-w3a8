@@ -1,0 +1,2 @@
+`torch_dtype` is deprecated! Use `dtype` instead!
+sanity_block: PASS logits_shape=(1, 12, 151936) dtype=torch.bfloat16

@@ -20,9 +20,11 @@ scaling, padding, E4M3 software emulator, Lloyd initialization, and the Qwen
 evaluation protocol. Lloyd-Max and the scale recipe describe this reference
 implementation only.
 
-Out of scope: W16A8, GPTQ, AWQ, Hadamard, Fisher, RMS2, K32, mixed precision
-policies, physical 3-bit packing, CUDA, PTX, Triton, C++ extensions,
-TensorRT, K3V3, MoE, Qwen3-4B, and performance claims.
+The original `reference-v1` scope excludes W16A8, GPTQ, AWQ, Hadamard,
+Fisher, RMS2, K32, mixed precision policies, physical 3-bit packing, CUDA,
+PTX, Triton, C++ extensions, TensorRT, K3V3, MoE, Qwen3-4B, and performance
+claims. The separately versioned H64 + GPTQ + refit experiment and Plan A
+diagnostics are documented below; they preserve the original reference rules.
 
 ## Weight orientation and logical tile
 
@@ -166,3 +168,54 @@ path performs the paired input rotation in FP32; W3A8 quantizes the rotated
 input with this specification's existing A8 rule. It uses its own experiment
 version, recipe metadata, and payload identity in addition to `reference-v1`.
 Historical results and the default plain Lloyd-Max quantizer remain unchanged.
+
+## Plan A measurement semantics
+
+The accepted [Plan A protocol](update_plan_a.md) observes the original BF16
+teacher at the same seven projections. Quantized local outputs are measured
+against the corresponding teacher output without replacing teacher modules or
+feeding a local result into subsequent layers. A16 preserves the BF16 input
+values; B1 performs the existing FP32 signed-H64 input rotation first.
+A8 uses the existing K64 activation rule on the applicable input. Each paired
+A16/A8 evaluation shares one `CachedLUTLinear` reconstruction and both follow
+its FP32 accumulation and final BF16 output cast.
+
+FP64 SSE is computed by promoting outputs before subtraction and squaring.
+For teacher output `Y` and element count `N`:
+
+```text
+SSE_A16 = sum((Y_A16 - Y)^2)
+SSE_A8 = sum((Y_A8 - Y)^2)
+teacher_energy = sum(Y^2)
+MSE_mode = SSE_mode / N
+relative_output_error_mode = sqrt(SSE_mode / (teacher_energy + 1e-12))
+activation_increment_mse = sum((Y_A8 - Y_A16)^2) / N
+a8_teacher_mse_delta = (SSE_A8 - SSE_A16) / N
+```
+
+The last metric is signed and includes the error cross term; it can be
+negative even when activation increment MSE is positive. It is derived from
+existing SSE values without another forward. Each projection summary pools
+SSE, energy, and counts before applying these formulas.
+
+Precision controls use original unquantized weights with FP32 accumulation,
+plus the paired unquantized H64 path for B1. Repeated FP32 controls must agree
+exactly across recipes by block output hash and sufficient statistics.
+The final control CSV contains one record per layer/control, with no duplicate
+recipe records.
+
+Output metrics independently reduce from `block_stats.csv`. This verifies
+the reduction chain, not an independent forward. Weight error independently
+rebuilds the original frozen payload through LUT/indices/scales and, for B1,
+the fixed inverse signed-H64 transform into the original weight basis. It
+uses original BF16 checkpoint weights promoted to FP32 and accumulates errors
+in FP64, counting each layer's weights once.
+
+For B1−B0 relative output error comparisons, the raw difference is retained
+and the fixed tolerance is
+`1e-8 + 1e-6 * max(abs(E_B0), abs(E_B1))`. The closed interval around zero
+defines tied results; strict values below/above it define improved/worsened.
+The independent reduction tolerance is separately `atol=1e-12, rtol=1e-10`.
+Neither tolerance relaxes payload fingerprints, teacher hashes, or repeated
+control identity. The fixed CSV schemas and acceptance requirements are in
+Plan A; [measured results](layerwise_diagnostics.md) are recorded separately.
