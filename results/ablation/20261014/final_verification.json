@@ -1,0 +1,26 @@
+{
+  "verification_version": "ablation-final-checks-v1",
+  "status": "PASS",
+  "run_manifest_sha256": "6eca4e0aae47fc037f43527057a714fcaffed46782af7642aa3b29c39024ef28",
+  "fresh_test_rows": 8,
+  "baseline_regression_rows": 4,
+  "baseline_deltas_exactly_zero": true,
+  "implementation_tests": 108,
+  "skipped": 0,
+  "source_protocol_and_test_log_fingerprints_match": true,
+  "independent_output_reductions_rechecked": true,
+  "independent_input_reductions_rechecked": true,
+  "recorded_independent_weight_validation": "PASS",
+  "exact_smoke_prefix": true,
+  "exact_cross_recipe_controls": true,
+  "report_values_checked_against_csv": true,
+  "relative_document_links_checked": 137,
+  "numeric_dependency_lock_unchanged": true,
+  "figures": {
+    "png_sets": 3,
+    "pdf_sets": 3,
+    "png_visual_inspection": "PASS",
+    "pdf_header_check": "PASS"
+  },
+  "test_hyperparameter_tuning": false
+}

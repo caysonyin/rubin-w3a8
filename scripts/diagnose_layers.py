@@ -183,8 +183,8 @@ def check_payload(path, metadata, expected, model=None):
     return payload, details
 
 
-def implementation_evidence():
-    path = ROOT / "results/layerwise_diagnostics/implementation_acceptance.json"
+def implementation_evidence(directory=ROOT / "results/layerwise_diagnostics"):
+    path = Path(directory) / "implementation_acceptance.json"
     if not path.is_file():
         return "NOT_RUN", "No current independent implementation test evidence"
     evidence = json.loads(path.read_text())

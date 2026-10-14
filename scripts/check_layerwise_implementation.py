@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import hashlib
+import argparse
 from pathlib import Path
 import subprocess
 import sys
@@ -12,7 +13,10 @@ from scripts.diagnose_layers import ROOT, dependency_check, source_fingerprints,
 
 
 def main():
-    output = ROOT / "results/layerwise_diagnostics"
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output-dir", type=Path, default=ROOT / "results/layerwise_diagnostics")
+    args = parser.parse_args()
+    output = args.output_dir.resolve()
     output.mkdir(parents=True, exist_ok=True)
     log = output / "implementation_tests.log"
     status, reason, versions = dependency_check()

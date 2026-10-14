@@ -215,3 +215,13 @@ breakdown, signed A8 Teacher MSE changes, controls, and independent
 verification sources. These local measurements complement the test-PPL
 comparison; they do not supply per-layer PPL sensitivity or per-step mechanism
 attribution.
+
+## Four-recipe ablation
+
+The subsequent [Plan B protocol](ablation_protocol.md) inserts H64 + Lloyd-Max
+and H64 + GPTQ without refitting between this comparison's endpoints. It
+reuses the exact B0/B1 payload identities, BF16 score, and Plan A local
+evidence while freshly evaluating all eight quantized Test rows. The
+[ablation report](ablation_report.md) contains fixed-order conditional
+increments and the local `o_proj` / A8 analysis. The historical comparison
+artifacts above continue to define the original accepted baseline.

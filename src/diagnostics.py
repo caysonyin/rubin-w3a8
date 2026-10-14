@@ -59,12 +59,13 @@ def validate_teacher(model, *, canonical=True):
     return modules
 
 
-def collect_recipe(model, payload, tokens, *, block_length=1024, canonical=True):
+def collect_recipe(model, payload, tokens, *, block_length=1024, canonical=True,
+                   methods=METHODS, schema_version=SCHEMA_VERSION, observer=None):
     """One teacher pass per token block; each local A16/A8 pair shares one reconstruction."""
     modules = validate_teacher(model, canonical=canonical)
     validate_payload(payload, payload["metadata"], model)
     method = payload["metadata"]["weight_method"]
-    if method not in METHODS:
+    if method not in methods:
         raise ValueError("Unsupported diagnostic recipe")
     if (tokens.ndim != 1 or tokens.dtype != torch.long or tokens.device.type != "cpu"
             or block_length < 1 or tokens.numel() == 0 or tokens.numel() % block_length):
@@ -98,7 +99,7 @@ def collect_recipe(model, payload, tokens, *, block_length=1024, canonical=True)
             bias = module.bias.detach().float() if module.bias is not None else None
             control = F.linear(x.float(), module.weight.detach().float(), bias).to(x.dtype)
             block, projection = module_coordinates(name)
-            row = dict(schema_version=SCHEMA_VERSION, module_name=name, transformer_block=block,
+            row = dict(schema_version=schema_version, module_name=name, transformer_block=block,
                        projection=projection, weight_method=method, payload_fingerprint=payload["fingerprint"],
                        token_block_index=active_block, num_tokens=block_length, output_numel=y.numel(),
                        teacher_input_hash=tensor_hash(x), teacher_output_hash=tensor_hash(y),
@@ -106,12 +107,14 @@ def collect_recipe(model, payload, tokens, *, block_length=1024, canonical=True)
                        sse_a8=squared_error(y8, y), sse_a8_vs_a16=squared_error(y8, y16),
                        sse_fp32_control=squared_error(control, y), fp32_control_output_hash=tensor_hash(control),
                        sse_h64_control=None, h64_control_output_hash=None)
-            if method == METHODS[1]:
+            if entry["signs"] is not None:
                 rotated_control = F.linear(rotate(x, entry["signs"]),
                                            rotate(module.weight.detach(), entry["signs"]), bias).to(x.dtype)
                 row.update(sse_h64_control=squared_error(rotated_control, y),
                            h64_control_output_hash=tensor_hash(rotated_control))
             records.append(row)
+            if observer is not None:
+                observer(name, module, x, y, entry, active_block)
             # Returning None leaves the native BF16 teacher output unchanged.
         return hook
 
@@ -132,7 +135,7 @@ def collect_recipe(model, payload, tokens, *, block_length=1024, canonical=True)
     finally:
         for handle in handles:
             handle.remove()
-    records.sort(key=lambda row: row_order("block_stats.csv", row))
+    records.sort(key=lambda row: row_order("block_stats.csv", row, methods=methods))
     return records, weights
 
 

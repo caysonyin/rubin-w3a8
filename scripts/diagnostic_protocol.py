@@ -92,7 +92,7 @@ def nullable(name, row):
                H64_FIELDS if name == "block_stats.csv" else ())
 
 
-def validate_row(name, row):
+def validate_row(name, row, *, methods=METHODS, schema_version=SCHEMA_VERSION):
     if set(row) != set(SCHEMAS[name]):
         raise ValueError(f"{name}: fields do not match frozen schema")
     allowed_empty = nullable(name, row)
@@ -113,9 +113,9 @@ def validate_row(name, row):
             raise ValueError(f"{name}: invalid finite statistic {field}")
         if field.endswith(("hash", "fingerprint")) and not re.fullmatch("[0-9a-f]{64}", value):
             raise ValueError(f"{name}: invalid SHA256 {field}")
-    if row["schema_version"] != SCHEMA_VERSION or row["projection"] not in PROJECTIONS:
+    if row["schema_version"] != schema_version or row["projection"] not in PROJECTIONS:
         raise ValueError(f"{name}: unsupported version or projection")
-    if "weight_method" in row and row["weight_method"] not in METHODS:
+    if "weight_method" in row and row["weight_method"] not in methods:
         raise ValueError(f"{name}: unsupported recipe")
     if "module_name" in row and module_coordinates(row["module_name"]) != (row["transformer_block"], row["projection"]):
         raise ValueError(f"{name}: inconsistent module coordinates")
@@ -129,36 +129,36 @@ def validate_row(name, row):
     if "control_type" in row and row["control_type"] not in ("fp32_unquantized", "h64_unquantized"):
         raise ValueError("Invalid control type")
     if "cross_recipe_check" in row and row["cross_recipe_check"] != (
-        "PASS" if row["control_type"] == "fp32_unquantized" else "NOT_APPLICABLE"
+        "PASS" if row["control_type"] == "fp32_unquantized" or len(methods) > 2 else "NOT_APPLICABLE"
     ):
         raise ValueError("Invalid cross-recipe control status")
 
 
-def row_order(name, row):
+def row_order(name, row, *, methods=METHODS):
     projection = PROJECTIONS.index(row["projection"])
     if name == "projection_summary.csv":
-        return projection, METHODS.index(row["weight_method"])
+        return projection, methods.index(row["weight_method"])
     tail = (("fp32_unquantized", "h64_unquantized").index(row["control_type"])
-            if name == "precision_controls.csv" else METHODS.index(row["weight_method"]))
+            if name == "precision_controls.csv" else methods.index(row["weight_method"]))
     return row["transformer_block"], projection, tail, row.get("token_block_index", 0)
 
 
-def validate_rows(name, rows):
+def validate_rows(name, rows, *, methods=METHODS, schema_version=SCHEMA_VERSION):
     seen = set()
     for row in rows:
-        validate_row(name, row)
+        validate_row(name, row, methods=methods, schema_version=schema_version)
         key = tuple(row[field] for field in KEYS[name])
         if key in seen:
             raise ValueError(f"{name}: duplicate primary key {key}")
         seen.add(key)
-    if rows != sorted(rows, key=lambda row: row_order(name, row)):
+    if rows != sorted(rows, key=lambda row: row_order(name, row, methods=methods)):
         raise ValueError(f"{name}: noncanonical row order")
 
 
-def write_csv(path, rows):
+def write_csv(path, rows, *, methods=METHODS, schema_version=SCHEMA_VERSION):
     path = Path(path)
     name = path.name
-    validate_rows(name, rows)
+    validate_rows(name, rows, methods=methods, schema_version=schema_version)
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(".csv.tmp")
     with temporary.open("w", newline="", encoding="utf-8") as handle:
@@ -170,7 +170,7 @@ def write_csv(path, rows):
     os.replace(temporary, path)
 
 
-def read_csv(path):
+def read_csv(path, *, methods=METHODS, schema_version=SCHEMA_VERSION):
     path = Path(path)
     with path.open(newline="", encoding="utf-8") as handle:
         reader = csv.DictReader(handle)
@@ -182,27 +182,32 @@ def read_csv(path):
                 raise ValueError(f"{path.name}: malformed row")
             rows.append({field: None if value == "" else value if field in STRINGS
                          else int(value) if field in INTEGERS else float(value) for field, value in raw.items()})
-    validate_rows(path.name, rows)
+    validate_rows(path.name, rows, methods=methods, schema_version=schema_version)
     return rows
 
 
-def validate_block_pairs(rows):
-    validate_rows("block_stats.csv", rows)
+def validate_block_pairs(rows, *, methods=METHODS, schema_version=SCHEMA_VERSION):
+    if len(methods) < 2 or len(set(methods)) != len(methods) or methods[0] != METHODS[0]:
+        raise ValueError("Diagnostics require unique recipes with plain B0 first")
+    validate_rows("block_stats.csv", rows, methods=methods, schema_version=schema_version)
     pairs = {}
     for row in rows:
         pairs.setdefault((row["module_name"], row["token_block_index"]), {})[row["weight_method"]] = row
     common = ("teacher_input_hash", "teacher_output_hash", "num_tokens", "output_numel",
               "teacher_output_energy", "sse_fp32_control", "fp32_control_output_hash")
     for key, pair in pairs.items():
-        if set(pair) != set(METHODS):
+        if set(pair) != set(methods):
             raise ValueError(f"Missing paired recipe for {key}")
-        if any(pair[METHODS[0]][field] != pair[METHODS[1]][field] for field in common):
+        if any(pair[methods[0]][field] != pair[method][field] for field in common for method in methods[1:]):
             raise ValueError(f"Teacher or FP32 control mismatch for {key}")
+        if any(pair[methods[1]][field] != pair[method][field]
+               for field in H64_FIELDS for method in methods[2:]):
+            raise ValueError(f"Repeated H64 control mismatch for {key}")
 
 
-def reduce_tables(blocks, weights):
+def reduce_tables(blocks, weights, *, methods=METHODS, schema_version=SCHEMA_VERSION):
     """Rebuild tables from block sufficient statistics and one weight record per layer."""
-    validate_block_pairs(blocks)
+    validate_block_pairs(blocks, methods=methods, schema_version=schema_version)
     groups = {}
     for row in blocks:
         groups.setdefault((row["module_name"], row["weight_method"]), []).append(row)
@@ -232,22 +237,22 @@ def reduce_tables(blocks, weights):
         layers.append(layer)
     by_key = {(row["module_name"], row["weight_method"]): row for row in layers}
     for row in layers:
-        if row["weight_method"] == METHODS[1]:
+        if row["weight_method"] != methods[0]:
             baseline = by_key[row["module_name"], METHODS[0]]
             for mode in ("a16", "a8"):
                 delta, tolerance, classification = classify_change(baseline[f"relative_error_{mode}"], row[f"relative_error_{mode}"])
                 row.update({f"delta_relative_error_{mode}": delta,
                             f"comparison_tolerance_{mode}": tolerance, f"comparison_{mode}": classification})
-    layers.sort(key=lambda row: row_order("layer_errors.csv", row))
+    layers.sort(key=lambda row: row_order("layer_errors.csv", row, methods=methods))
     summaries = []
     for projection in PROJECTIONS:
-        for method in METHODS:
+        for method in methods:
             group = [row for row in layers if row["projection"] == projection and row["weight_method"] == method]
             if not group:
                 continue
             if len({(row["num_tokens"], row["num_token_blocks"]) for row in group}) != 1:
                 raise ValueError("Inconsistent projection token coverage")
-            summary = dict(schema_version=SCHEMA_VERSION, projection=projection, weight_method=method,
+            summary = dict(schema_version=schema_version, projection=projection, weight_method=method,
                            num_layers=len(group), num_token_blocks_per_layer=group[0]["num_token_blocks"],
                            num_tokens_per_layer=group[0]["num_tokens"])
             for field in ("output_numel", "teacher_output_energy", "sse_a16", "sse_a8", "sse_a8_vs_a16",
@@ -260,12 +265,12 @@ def reduce_tables(blocks, weights):
                 summary[f"median_relative_error_{mode}"] = statistics.median(row[f"relative_error_{mode}"] for row in group)
                 for classification in ("improved", "worsened", "tied"):
                     summary[f"{classification}_layers_{mode}"] = (
-                        sum(row[f"comparison_{mode}"] == classification for row in group) if method == METHODS[1] else None)
+                        sum(row[f"comparison_{mode}"] == classification for row in group) if method != methods[0] else None)
             summaries.append(summary)
     controls = []
     for module in dict.fromkeys(row["module_name"] for row in layers):
         for kind, method, sse in (("fp32_unquantized", METHODS[0], "sse_fp32_control"),
-                                   ("h64_unquantized", METHODS[1], "sse_h64_control")):
+                                   ("h64_unquantized", methods[1], "sse_h64_control")):
             group = groups[module, method]
             layer = by_key[module, method]
             control = {field: layer[field] for field in ("schema_version", "module_name", "transformer_block", "projection",
@@ -273,13 +278,13 @@ def reduce_tables(blocks, weights):
             total = sum(row[sse] for row in group)
             control.update(control_type=kind, control_sse=total, control_mse=total / layer["output_numel"],
                            control_relative_error=relative_error(total, layer["teacher_output_energy"]),
-                           cross_recipe_check="PASS" if method == METHODS[0] else "NOT_APPLICABLE")
+                           cross_recipe_check="PASS" if method == methods[0] or len(methods) > 2 else "NOT_APPLICABLE")
             controls.append(control)
     controls.sort(key=lambda row: row_order("precision_controls.csv", row))
     result = {"layer_errors.csv": layers, "projection_summary.csv": summaries,
               "precision_controls.csv": controls, "block_stats.csv": blocks}
     for name, rows in result.items():
-        validate_rows(name, rows)
+        validate_rows(name, rows, methods=methods, schema_version=schema_version)
     return result
 
 
@@ -296,27 +301,27 @@ def assert_tables_equal(actual, expected):
                     raise ValueError(f"{name}: recomputation mismatch for {field}")
 
 
-def read_verified_tables(directory, independent_weights=None):
+def read_verified_tables(directory, independent_weights=None, *, methods=METHODS, schema_version=SCHEMA_VERSION):
     directory = Path(directory)
-    actual = {name: read_csv(directory / name) for name in SCHEMAS}
+    actual = {name: read_csv(directory / name, methods=methods, schema_version=schema_version) for name in SCHEMAS}
     weights = independent_weights if independent_weights is not None else {
         (row["module_name"], row["weight_method"]): {field: row[field] for field in (
             "in_features", "out_features", "weight_numel", "weight_sse", "weight_reference_energy")}
         for row in actual["layer_errors.csv"]
     }
-    assert_tables_equal(actual, reduce_tables(actual["block_stats.csv"], weights))
+    assert_tables_equal(actual, reduce_tables(actual["block_stats.csv"], weights, methods=methods, schema_version=schema_version))
     return actual
 
 
-def validate_canonical_tables(tables, num_tokens, payload_fingerprints):
+def validate_canonical_tables(tables, num_tokens, payload_fingerprints, *, methods=METHODS):
     names = {f"model.layers.{block}.{'self_attn' if projection in PROJECTIONS[:4] else 'mlp'}.{projection}"
              for block in range(28) for projection in PROJECTIONS}
-    expected = {(name, method) for name in names for method in METHODS}
+    expected = {(name, method) for name in names for method in methods}
     if {(row["module_name"], row["weight_method"]) for row in tables["layer_errors.csv"]} != expected:
         raise ValueError("Incomplete canonical 196-layer coverage")
-    if len(tables["projection_summary.csv"]) != 14 or len(tables["precision_controls.csv"]) != 392:
+    if len(tables["projection_summary.csv"]) != 7 * len(methods) or len(tables["precision_controls.csv"]) != 392:
         raise ValueError("Incomplete canonical summary/control coverage")
-    if len(tables["block_stats.csv"]) != 392 * (num_tokens // 1024):
+    if len(tables["block_stats.csv"]) != 196 * len(methods) * (num_tokens // 1024):
         raise ValueError("Incomplete canonical token block coverage")
     for row in tables["layer_errors.csv"]:
         if (row["num_tokens"] != num_tokens or row["num_token_blocks"] != num_tokens // 1024

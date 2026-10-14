@@ -178,3 +178,13 @@ and independent verification sources.
 The local-output results concern the combined recipe under the fixed
 teacher-input protocol. They do not measure layer PPL sensitivity or isolate
 the effects of individual H64, GPTQ, and refitting steps.
+
+## Sequential quantization ablation
+
+Plan B adds H64 + Lloyd-Max and H64 + GPTQ without LUT refitting between the
+existing plain/B1 endpoints. The [fixed protocol](ablation_protocol.md)
+preserves the numerical format and data splits; the
+[research report](ablation_report.md) records full-model scores, conditional
+increments, and the `o_proj` / A8 diagnostics. This fixed-order study measures
+H64 given plain Lloyd-Max, GPTQ given H64, and refitting given H64 + GPTQ.
+It does not establish independent component causality.

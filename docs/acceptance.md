@@ -87,3 +87,34 @@ Current scope is the fixed two-recipe diagnostic experiment. It does not
 establish layer PPL sensitivity, individual H64/GPTQ/refit attribution, a new
 recovery method, an additional model/benchmark, or a hardware performance
 result. Reproduction commands are in the [README](../README.md).
+
+## Plan B acceptance completed on 2026-10-14
+
+Plan B is the separately authorized four-recipe sequential ablation on merged
+main `e6a3adc`. The [frozen protocol](ablation_protocol.md) and
+[research report](ablation_report.md) define its scope and conclusions.
+Historical Plan A engineering evidence above remains a record of that execution.
+
+| Gate | Result | Evidence |
+|---|---|---|
+| Implementation Acceptance | PASS; 108 tests, zero skips; original recipe golden fingerprints unchanged | [Engineering record](../results/ablation/implementation/implementation_acceptance.json), [log](../results/ablation/implementation/implementation_tests.log) |
+| Resource and historical acceptance | PASS; original model/tokenizer/calibration/diagnostic inputs and both historical payloads match | [Preflight](../results/ablation/20261014-preflight/manifest.json), [run manifest](../results/ablation/20261014/manifest.json) |
+| Recipe fairness | PASS; 196 matching signs/scales, identical A1/A2 initial LUTs, A2 proxy matches B1 initial sweep, zero A2 refit rounds | [Factor checks](../results/ablation/20261014/manifest.json) |
+| Smoke Acceptance | PASS; 1,024 validation tokens | [Smoke manifest](../results/ablation/20261014/smoke/manifest.json) |
+| Diagnostic Acceptance | PASS; 4,096 validation tokens, four-recipe coverage, independent reductions/weight reconstruction, exact shared controls and smoke prefix | [Full manifest](../results/ablation/20261014/full/manifest.json) |
+| Historical result regression | PASS; all four B0/B1 NLL/PPL differences exactly zero | [Baseline regression](../results/ablation/20261014/manifest.json) |
+| Test and Experiment Acceptance | PASS; all eight quantized rows freshly evaluated with frozen payloads | [Summary](../results/ablation/20261014/summary.csv), [logs and JSON](../results/ablation/20261014/evaluations/) |
+| Source and artifacts | PASS; source unchanged during execution, three PNG/PDF figure sets, relative document links | [Manifest](../results/ablation/20261014/manifest.json), [output directory](../results/ablation/20261014/) |
+
+The historical BF16 score and B0/B1 local diagnostic statistics are explicitly
+reused with provenance; their reuse is separate from the freshly measured
+quantized Test rows. A1/A2 and all conditional comparisons preserve the original
+model, quantization format, data isolation, and thread counts. No Test tuning,
+new model, new quantization format, or GPU kernel was introduced.
+
+Experiment acceptance verifies execution and measurement integrity. It does
+not require each added recipe to improve accuracy: H64 alone is a valid
+negative result in this setting. GPTQ given H64 provides the largest
+conditional benefit, and refitting provides a smaller further benefit.
+Independent component causality, cross-seed generality, and per-layer PPL
+sensitivity remain outside the supported conclusions.
